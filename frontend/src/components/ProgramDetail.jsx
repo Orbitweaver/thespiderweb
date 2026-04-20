@@ -12,6 +12,8 @@ export default function ProgramDetail() {
 
   useEffect(() => { window.scrollTo({ top: 0, behavior: 'instant' }); }, [slug]);
 
+  const goToAdmissions = () => navigate('/', { state: { scrollTo: 'admissions' } });
+
   if (!program) {
     return (
       <div className="min-h-screen flex items-center justify-center flex-col gap-4">
@@ -31,7 +33,7 @@ export default function ProgramDetail() {
           <button onClick={() => navigate('/')} data-testid="program-back-btn" className="flex items-center gap-2 text-[13px] tracking-[0.18em] uppercase link-u" data-web-anchor>
             <ArrowLeft className="w-4 h-4" /> Silkstrand
           </button>
-          <button onClick={() => { navigate('/'); setTimeout(() => document.getElementById('admissions')?.scrollIntoView({ behavior: 'smooth' }), 100); }} className="btn-pill rounded-full bg-[var(--ink)] text-[var(--cream)] px-5 py-2.5 text-[13px] tracking-wide" data-testid="program-apply-btn">Apply →</button>
+          <button onClick={goToAdmissions} className="btn-pill rounded-full bg-[var(--ink)] text-[var(--cream)] px-5 py-2.5 text-[13px] tracking-wide" data-testid="program-apply-btn">Apply →</button>
         </div>
       </header>
 
@@ -103,7 +105,7 @@ export default function ProgramDetail() {
                 <div className="font-display text-5xl mt-2">{program.studentRatio}</div>
                 <div className="text-[13px] text-[var(--cream)]/70">student-to-teacher</div>
               </div>
-              <Button data-testid="program-inquire-btn" onClick={() => { navigate('/'); setTimeout(() => document.getElementById('admissions')?.scrollIntoView({ behavior: 'smooth' }), 100); }} className="btn-pill rounded-full h-12 w-full bg-[var(--cream)] text-[var(--ink)] hover:bg-[var(--cream)] tracking-[0.2em] text-[12px] uppercase">Inquire about {program.name}</Button>
+              <Button data-testid="program-inquire-btn" onClick={goToAdmissions} className="btn-pill rounded-full h-12 w-full bg-[var(--cream)] text-[var(--ink)] hover:bg-[var(--cream)] tracking-[0.2em] text-[12px] uppercase">Inquire about {program.name}</Button>
             </div>
           </aside>
         </div>

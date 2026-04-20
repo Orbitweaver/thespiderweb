@@ -1,0 +1,28 @@
+{
+  "summary": "Iteration 5 retest of the cross-route scroll-to-admissions bug flagged in iter 4. Fix verified working end-to-end. (1) From /programs/lower-school clicking program-apply-btn navigates to / and scrolls admissions into view — observed admissions rect.top = -0.44px, scrollY = 4808 (well within the -50..160 range in review_request). (2) From /programs/arts-conservatory clicking program-inquire-btn — identical behaviour, admissions rect.top = -0.44px. (3) Back button on /programs/upper-school (fresh navigation) returns home with scrollY = 0 at top. Regression: newsletter submits ('thread'/'welcome' toast visible), admissions form submits ('Inquiry received … 48 hours') with all fields (adm-student, adm-parent, adm-email, adm-phone, adm-grade, adm-program SelectTrigger + first option, adm-notes), contact form submits ('Thanks — we'll be in touch soon.') using c-name/c-email/c-subject/c-message/c-submit. Stories section present with all 5 story-* testids. Academics card (program-0) still navigates to /programs/lower-school. Mechanism: App.js Home now reads useLocation().state?.scrollTo and uses requestAnimationFrame-based retry (up to 20 frames) until element is mounted, then scrollIntoView({behavior:'smooth',block:'start'}) — robust replacement for the earlier 100ms setTimeout race.",
+  "backend_issues": { "critical": [], "minor": [] },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/backend_test.py",
+    "/app/test_reports/pytest/pytest_results.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "App.js Home scroll-to target effect depends on [location.state] only. If a user lands on / directly (no state) then navigates internally to /programs/:slug and back via browser back-button with a state that happens to include scrollTo from a replaced history entry, it could theoretically re-scroll. Not observed in practice; keep in mind.",
+    "requestAnimationFrame retry loop caps at 20 frames (~320ms on a 60fps device). Sufficient for current page but if Admissions ever gains heavy lazy-loaded content, consider raising the cap or using IntersectionObserver/MutationObserver on document.getElementById.",
+    "Consider calling scrollIntoView with block:'start' and offsetting for the fixed top nav (nav height ~70-80px). Current top position ends at -0.44px which is acceptable but slightly hidden behind the transparent backdrop-blur nav on program pages. Home page has no fixed nav so it's fine there.",
+    "ProgramDetail.jsx useEffect scroll uses behavior:'instant' — valid per modern spec but older browsers may warn; acceptable."
+  ],
+  "updated_files": [],
+  "success_rate": { "backend": "not retested (review_request: frontend only)", "frontend": "100% (6/6 retest flows pass)" },
+  "test_credentials": "N/A - no auth",
+  "seed_data_creation": "Playwright inserted live records during regression: 1 admissions (TEST_iter5_Student/Parent, test_iter5@example.com, Grade 5), 1 contact (TEST_iter5_C, test_c_iter5@example.com). No newsletter subscription this run (the earlier attempt on a different page did not complete). These live in the real backend MongoDB — main agent may wish to clean TEST_* rows.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Preview URL: https://web-academy-design.preview.emergentagent.com. Iter-4 cross-route scroll bug is FIXED in App.js (useLocation state + rAF retry) and ProgramDetail.jsx (goToAdmissions -> navigate('/', {state:{scrollTo:'admissions'}})). All review_request items verified PASS. Contact form testids are c-name/c-email/c-subject/c-message/c-submit (NOT contact-*). Admissions form testids are adm-student/adm-parent/adm-email/adm-phone/adm-grade/adm-program/adm-notes/adm-submit. Newsletter testids are newsletter-email/newsletter-submit. Viewport 1920x1080 works best for scroll assertions.",
+  "rca of the issue": "Fixed. Previous 100ms setTimeout raced with route mount and layout. New implementation: ProgramDetail passes navigate('/', {state:{scrollTo:'admissions'}}); Home component reads location.state?.scrollTo in useEffect, then runs a requestAnimationFrame retry loop (up to 20 frames) that calls getElementById(target) and scrollIntoView once the node is present. Measured result: admissions section top = -0.44px after ~2s wait on both lower-school and arts-conservatory flows — well within review_request tolerance of [-50, 160]."
+}

@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import '@/App.css';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { Toaster } from 'sonner';
 import Nav from './components/Nav';
 import WebCursor from './components/WebCursor';
@@ -10,6 +10,24 @@ import Stories from './components/Stories';
 import ProgramDetail from './components/ProgramDetail';
 
 function Home() {
+  const location = useLocation();
+  useEffect(() => {
+    const target = location.state?.scrollTo;
+    if (!target) return;
+    // wait for layout, retry a few times until element is present & measured
+    let attempts = 0;
+    const tick = () => {
+      attempts += 1;
+      const el = document.getElementById(target);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else if (attempts < 20) {
+        requestAnimationFrame(tick);
+      }
+    };
+    requestAnimationFrame(tick);
+  }, [location.state]);
+
   return (
     <>
       <Nav />
