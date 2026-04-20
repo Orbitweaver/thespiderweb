@@ -1,0 +1,43 @@
+{
+  "summary": "Iteration 8 frontend-only test of MobileDrawer + burger at 430x900 and 1280x900 regression. 10/11 review items PASS. One CRITICAL UI bug: the drawer close button (data-testid=\"drawer-close-btn\") is NOT CLICKABLE because the sibling <nav class=\"relative z-10 pt-28 px-8 flex flex-col gap-2\"> intercepts pointer events at the close button's position. The close btn is absolutely positioned at top-6 left-6 with no z-index (z-auto), while nav has z-10 and its block bounding box spans the full overlay width from y=0 downward (covering ~y=0 to ~y=460 due to pt-28 + 7 links content height). document.elementFromPoint(cx,cy) at close-btn center returns <nav> (tag='NAV', class='relative z-10 pt-28 px-8 ...'), not the button. Playwright click on drawer-close-btn times out with 'nav intercepts pointer events' even after 30s of retries. Even force=True does not result in drawer closing (click dispatches on nav, which has no onClick). Everything else works: burger visible on mobile, desktop nav + apply hidden on mobile, drawer opens on burger click, all 7 drawer-nav-* buttons present and visible, apply CTA clickable + closes drawer + scrolls to admissions (admissions top=0.3 after click), nav link (drawer-nav-events) clickable + closes drawer + scrolls to section (events top=52.3), Escape key closes drawer (drawer_count=0, body overflow='' reset correctly), body.style.overflow='hidden' while open, SVG thread strokeDashoffset transitions from 1200 to 0 (verified computed style '0px', dasharray 1200), at desktop 1280x900 burger hidden + nav-home/nav-contact/nav-apply-btn all visible (no regression). Zero console errors during open/close cycles.",
+  "backend_issues": { "critical": [], "minor": [] },
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "MobileDrawer",
+        "issue": "Close button (drawer-close-btn) is not clickable because sibling <nav> (z-10) intercepts pointer events. document.elementFromPoint at close-btn center returns NAV. Playwright click times out with 'nav intercepts pointer events'. Users on touch devices can still tap without Playwright-level interception but the UX is still compromised: the nav's transparent block overlay covers the top-left 44x44 close button area, so any tap that lands on exposed nav whitespace (there is blank space to the left of the '01 Home' row due to pt-28 + the 8-px span on the number) will NOT propagate to the close button even visually. Add z-20 (or z-[80]) to the close-btn, OR make nav use pointer-events:none on the container with pointer-events:auto on the child buttons, OR absolutely position the nav so its bounding box does not overlap the close btn. Recommended quick fix: add `z-20` (or a higher z-index than nav's z-10) to the close button className, and similarly to the brand label at top-7 right-6 (same interception risk).",
+        "selector": "[data-testid='drawer-close-btn']",
+        "priority": "HIGH"
+      }
+    ],
+    "integration_issues": [],
+    "design_issues": [
+      {
+        "screen": "MobileDrawer @ 430x900",
+        "issues": [
+          "Brand label (top-7 right-6) likely has same z-index issue as close btn since it sits in nav's bounding box — not interactive so only visual risk, but for consistency apply z-20 there too.",
+          "After burger is clicked to open drawer, the burger icon underneath the drawer still bleeds through faintly (see screenshot) because the inline drawer overlay <div class=bg-[var(--ink)]> sits on top but visually the burger rim shows until clip-path reveal completes (~0.85s) — cosmetic, matches design intent."
+        ]
+      }
+    ]
+  },
+  "test_report_links": ["/app/test_reports/iteration_8.json"],
+  "action_items": [
+    "CRITICAL: Add z-20 (or higher than nav's z-10) to drawer-close-btn className in /app/frontend/src/components/MobileDrawer.jsx line ~98. Same fix recommended for the top-right brand label wrapper (line ~109) for consistency.",
+    "Alternative fix: change the drawer inner <nav> to not fill the full overlay area — e.g., use `absolute top-28 left-8 right-8` instead of block flow, OR add `pointer-events-none` to nav and `pointer-events-auto` on the inner buttons."
+  ],
+  "critical_code_review_comments": [
+    "MobileDrawer.jsx line 35: the cleanup function `return () => document.body.style.overflow && (document.body.style.overflow = '');` is a short-circuit expression with a side effect. It works but is hard to read — prefer an explicit `return () => { document.body.style.overflow = ''; };`. Also, when `open` toggles rapidly, the timeout (850ms) may race with a new open; consider clearing on open branch too (currently only cleared in close branch).",
+    "Stacking context: the overlay parent div (line 62) sets clipPath which creates a stacking context; the absolute close btn (z-auto) is painted BELOW the relatively-positioned nav (z-10) within that stacking context. This is the root cause of the close-btn interception. Any non-absolute child with z-index > 0 inside a stacking-context parent will stack above absolute children without z-index.",
+    "The close button click is non-idempotent relative to burger taps: if a user taps burger then the visible close X, nothing happens, forcing them to use ESC (desktop only) or tap a nav link to escape the drawer. On mobile touch there is no ESC — this blocks dismissal entirely unless the user taps one of the nav items or the apply CTA.",
+    "No backdrop click-to-close behavior implemented. Tapping outside the nav area (e.g., right half of drawer near the dangling spider) does not close the drawer. Consider adding onClick on the overlay root to close, with stopPropagation on child buttons."
+  ],
+  "updated_files": [],
+  "success_rate": { "backend": "skipped (frontend-only)", "frontend": "91% (10/11 review items pass — close button non-functional)" },
+  "test_credentials": "N/A",
+  "seed_data_creation": "None — static site.",
+  "retest_needed": true,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Preview URL: https://web-academy-design.preview.emergentagent.com. To re-test the close-btn fix: set viewport 430x900, click [data-testid=nav-burger], wait 1000ms, then click [data-testid=drawer-close-btn] WITHOUT force=True — it should succeed within 5s and leave drawer_count=0 plus document.body.style.overflow=''. To assert stacking: await page.evaluate(()=>{const b=document.querySelector('[data-testid=drawer-close-btn]');const r=b.getBoundingClientRect();return document.elementFromPoint(r.left+r.width/2, r.top+r.height/2)===b || b.contains(document.elementFromPoint(r.left+r.width/2,r.top+r.height/2));}) should return true. SVG thread transition assertion: getComputedStyle(drawer_svg_path).strokeDashoffset should equal '0px' within ~1.8s of opening (transition duration 1.4s + delay 0.35s). Escape key flow and apply/nav-link flows all verified working in this iteration — focus re-test on close-btn only.",
+  "rca of the issue": "Root cause: In MobileDrawer.jsx, the overlay container (line 62-67, class 'absolute inset-0 bg-[var(--ink)]') is a stacking context (clipPath creates a new stacking context in Chrome/Firefox). Inside this stacking context, the absolutely-positioned close button at line 95 (className 'absolute top-6 left-6 w-11 h-11 rounded-full ...') has z-index:auto, while the relatively-positioned <nav> at line 149 (className 'relative z-10 pt-28 px-8 ...') has z-index:10. Per CSS stacking rules, a positioned element with z-index:auto is painted below a sibling positioned element with z-index>0. The nav's block bounding box spans the overlay's full width and extends from y=0 down through its content (~y=460 with pt-28 + 7 link buttons). This overlaps the close button's rect (x:24 y:24 w:44 h:44). Thus, pointer events at the close-btn center are dispatched to the nav element, which has no click handler. Reproduction: viewport 430x900 → click nav-burger → wait 1s → click drawer-close-btn → click times out (nav intercepts pointer events). Mitigation: add class 'z-20' to the close-btn OR restructure nav to not overlap (use absolute positioning with top:7rem left/right bounds). Fix is a one-line className change."
+}
