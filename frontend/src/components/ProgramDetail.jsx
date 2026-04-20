@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowUpRight, Users, Compass } from 'lucide-react';
 import { programsCatalog } from '../data/programs';
 import { SpiderWeb, AsymmetricWeb, HangingWeb } from './SpiderWeb';
 import { Button } from './ui/button';
+import { useParallax, useStagger } from '../lib/interactions';
 
 export default function ProgramDetail() {
   const { slug } = useParams();
@@ -13,6 +14,13 @@ export default function ProgramDetail() {
   useEffect(() => { window.scrollTo({ top: 0, behavior: 'instant' }); }, [slug]);
 
   const goToAdmissions = () => navigate('/', { state: { scrollTo: 'admissions' } });
+
+  const heroImgParallax = useParallax(0.22);
+  const heroTextParallax = useParallax(-0.06);
+  const pillarsStagger = useStagger({ step: 140 });
+  const weekStagger = useStagger({ step: 110 });
+  const galleryStagger = useStagger({ step: 180 });
+  const othersStagger = useStagger({ step: 120 });
 
   if (!program) {
     return (
@@ -42,14 +50,14 @@ export default function ProgramDetail() {
         <div className="absolute -left-32 top-10 opacity-60 pointer-events-none"><SpiderWeb size={420} stroke="rgba(140,111,198,0.35)" spin /></div>
         <div className="absolute -right-28 bottom-0 opacity-50 pointer-events-none"><AsymmetricWeb size={280} stroke="rgba(95,178,136,0.4)" /></div>
         <div className="max-w-7xl mx-auto px-6 lg:px-10 grid lg:grid-cols-12 gap-10 items-end relative z-10">
-          <div className="lg:col-span-7">
+          <div ref={heroTextParallax} className="lg:col-span-7 parallax">
             <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] tracking-[0.26em] uppercase" style={{ background: program.color }}>{program.grades}</div>
             <h1 className="font-display text-[56px] sm:text-[80px] lg:text-[104px] leading-[0.95] tracking-tight mt-6">{program.name}</h1>
             <p className="mt-6 font-display italic text-2xl text-[var(--ink-soft)]">{program.tagline}</p>
             <p className="mt-8 text-[16px] leading-[1.7] text-[var(--ink-soft)] max-w-xl">{program.lead}</p>
           </div>
           <div className="lg:col-span-5">
-            <div className="relative rounded-3xl overflow-hidden border border-[rgba(43,33,64,0.08)] aspect-[4/5]" data-web-anchor>
+            <div ref={heroImgParallax} className="relative rounded-3xl overflow-hidden border border-[rgba(43,33,64,0.08)] aspect-[4/5] parallax" data-web-anchor>
               <img src={program.hero} alt={program.name} className="w-full h-full object-cover" />
               <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(43,33,64,0.25), transparent 60%)' }} />
               <div className="absolute top-0 right-0 opacity-70"><HangingWeb size={110} threadLen={60} /></div>
@@ -65,9 +73,9 @@ export default function ProgramDetail() {
             <div className="text-[11px] tracking-[0.3em] uppercase text-[var(--lavender-deep)] mb-3">Four pillars</div>
             <h2 className="font-display text-5xl tracking-tight">How the week is woven.</h2>
           </div>
-          <div className="grid md:grid-cols-2 gap-6">
+          <div ref={pillarsStagger} className="grid md:grid-cols-2 gap-6">
             {program.pillars.map((p, i) => (
-              <div key={i} className="p-8 rounded-3xl bg-white border border-[rgba(43,33,64,0.08)] tilt" data-web-anchor>
+              <div key={i} data-stagger-item className="stagger-item p-8 rounded-3xl bg-white border border-[rgba(43,33,64,0.08)] tilt" data-web-anchor>
                 <div className="text-[10px] tracking-[0.3em] uppercase text-[var(--lavender-deep)] mb-2">Pillar · {String(i + 1).padStart(2, '0')}</div>
                 <h3 className="font-display text-2xl">{p.t}</h3>
                 <p className="text-[15px] text-[var(--ink-soft)] mt-3 leading-relaxed">{p.d}</p>
@@ -83,9 +91,9 @@ export default function ProgramDetail() {
           <div className="lg:col-span-7">
             <div className="text-[11px] tracking-[0.3em] uppercase text-[var(--lavender-deep)] mb-3">A week, in shape</div>
             <h2 className="font-display text-4xl lg:text-5xl tracking-tight">What a typical week looks like.</h2>
-            <ol className="mt-10 space-y-5">
+            <ol ref={weekStagger} className="mt-10 space-y-5">
               {program.week.map((w, i) => (
-                <li key={i} className="flex gap-5 items-start pl-0" data-web-anchor>
+                <li key={i} data-stagger-item className="stagger-item flex gap-5 items-start pl-0" data-web-anchor>
                   <span className="w-10 h-10 rounded-full shrink-0 flex items-center justify-center text-[12px] tracking-[0.2em] font-display" style={{ background: program.color }}>{String(i + 1).padStart(2, '0')}</span>
                   <span className="text-[15px] leading-relaxed text-[var(--ink)] pt-2">{w}</span>
                 </li>
@@ -118,11 +126,9 @@ export default function ProgramDetail() {
             <h2 className="font-display text-4xl lg:text-5xl tracking-tight">From the studios.</h2>
             <span className="text-[11px] uppercase tracking-[0.3em] text-[var(--ink-soft)]">Campus gallery</span>
           </div>
-          <div className="grid md:grid-cols-3 gap-5">
+          <div ref={galleryStagger} className="grid md:grid-cols-3 gap-5">
             {program.gallery.map((g, i) => (
-              <div key={i} className="aspect-[4/5] rounded-3xl overflow-hidden border border-[rgba(43,33,64,0.08)] tilt" data-web-anchor>
-                <img src={g} alt="" className="w-full h-full object-cover transition-transform duration-700 hover:scale-105" loading="lazy" />
-              </div>
+              <GalleryImage key={i} src={g} index={i} />
             ))}
           </div>
         </div>
@@ -132,9 +138,9 @@ export default function ProgramDetail() {
       <section className="relative py-24">
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
           <div className="mb-10"><h2 className="font-display text-4xl tracking-tight">Other threads to follow.</h2></div>
-          <div className="grid md:grid-cols-3 gap-6">
+          <div ref={othersStagger} className="grid md:grid-cols-3 gap-6">
             {others.map(o => (
-              <Link key={o.slug} to={`/programs/${o.slug}`} data-testid={`program-other-${o.slug}`} className="group block p-7 rounded-3xl border border-[rgba(43,33,64,0.08)] bg-white tilt" data-web-anchor>
+              <Link key={o.slug} to={`/programs/${o.slug}`} data-testid={`program-other-${o.slug}`} data-stagger-item className="stagger-item group block p-7 rounded-3xl border border-[rgba(43,33,64,0.08)] bg-white tilt" data-web-anchor>
                 <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-[10px] tracking-[0.26em] uppercase" style={{ background: o.color }}>{o.grades}</div>
                 <h3 className="font-display text-2xl mt-6">{o.name}</h3>
                 <p className="text-[14px] text-[var(--ink-soft)] mt-2 line-clamp-2">{o.tagline}</p>
@@ -147,3 +153,16 @@ export default function ProgramDetail() {
     </div>
   );
 }
+
+/* Gallery image with clip-path sweep reveal on scroll (driven by stagger-item .in class via CSS) */
+const GalleryImage = ({ src }) => {
+  return (
+    <div
+      data-stagger-item
+      className="stagger-item clip-reveal aspect-[4/5] rounded-3xl overflow-hidden border border-[rgba(43,33,64,0.08)] tilt relative"
+      data-web-anchor
+    >
+      <img src={src} alt="" className="w-full h-full object-cover transition-transform duration-700 hover:scale-105" loading="lazy" />
+    </div>
+  );
+};

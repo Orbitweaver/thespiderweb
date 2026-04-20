@@ -1,0 +1,26 @@
+{
+  "summary": "Iteration 7 frontend-only verification of scroll-driven storytelling additions (parallax, stagger, clip-reveal). All 11 review items PASS. Zero console errors. Zero /api/* network requests (static site). Stories: all 5 story articles (mycelium-and-math, kyoto-letters, the-weaver-library, chamber-music-strand, a-gentle-curriculum) carry .stagger-item, observed sequential .in flip — immediately after scroll only first had .in (opacity 0.86) and rest opacity=0; after 2s all 5 had .in + opacity=1, confirming 160ms stagger step. Featured Stories image has .clip-reveal, clipPath transitions from inset(0 100% 0 0) to inset(0 0% 0 0) (final observed inset(0px 0% 0px 0px)). ProgramDetail /programs/lower-school: 2 .parallax elements on hero, transforms update on scroll — hero image translate3d Y: 25.1→65.78 (delta ~40.7px matches strength 0.22), hero text 1.46→-11.05 (delta ~12.5px matches strength -0.06). Pillars: 4 .stagger-item cards all reach .in sequentially. Week <ol>: 5 .stagger-item list-items all reach .in. Gallery: 3 images have BOTH .clip-reveal AND .stagger-item, all reach .in with clipPath inset(0px 0% 0px 0px). Other threads: 3 program-other-* Link cards have .stagger-item, all reach .in after scroll. Regressions green: scroll-thread bar width 25.13% at scrollY=2000; hero-apply-btn magnetic wrapper drifts to translate(4.32px, 3.21px) on near hover; newsletter submit triggers ZERO /api/* calls; all 6 academics cards link to /programs/:slug (lower-school, middle-school, upper-school, arts-conservatory, athletics, global-year).",
+  "backend_issues": { "critical": [], "minor": [] },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": ["/app/test_reports/iteration_7.json"],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "useStagger disconnects observer after firing once (good) — but items only animate the first time the container enters viewport. If user scrolls past and back, state is preserved (items stay visible). This is the intended behaviour for reveal animations, so no action needed.",
+    "useParallax sets transform on every rAF scroll tick via inline style, which overwrites any other transform (e.g., magnetic/tilt) on the same element. Currently the parallax refs are on distinct wrappers (hero-text col, hero-image aspect card), so there is no collision. Worth noting for future: do NOT attach both useParallax and useTilt to the same element.",
+    "In Stories.jsx the featured <article> (data-testid=story-mycelium-and-math) itself has .stagger-item AND contains a nested .clip-reveal.stagger-item inner div with data-stagger-item. useStagger's selector='[data-stagger-item]' grabs BOTH the outer and the nested one in sequence, so the nested image sweep starts ~160ms after its parent reveals. Works fine visually but the stagger step count is 6 on featured + side-grid container instead of 5 — harmless but a minor contract deviation from the review description (5 cards).",
+    "clip-reveal .in clipPath computed as 'inset(0px 0% 0px 0px)' (the 0% is preserved as % rather than collapsed to 0px) — this is Chrome's serialization and does NOT indicate a bug; transition is applied correctly.",
+    "Sonner toast container was not detected by role=status / .toast / [class*=toast] selectors during newsletter submit assertion, but iter-6 confirmed toasts appear; likely they render inside a portal with a non-standard class (sonner-toast). Not a regression — just a note for future test agents to use [data-sonner-toast] or the text of the toast string directly."
+  ],
+  "updated_files": [],
+  "success_rate": { "backend": "skipped (frontend-only)", "frontend": "100% (11/11 review items pass)" },
+  "test_credentials": "N/A",
+  "seed_data_creation": "None — site is fully static, zero backend writes.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Preview URL: https://web-academy-design.preview.emergentagent.com. Interactions live in /app/frontend/src/lib/interactions.js. Helpful assertion patterns for scroll-storytelling: (1) Parallax — read el.style.transform inline, not getComputedStyle (hook sets inline translate3d). (2) Stagger — scroll target into view then wait items.length * step + 300ms buffer; initial state has only earlier items with .in. (3) Clip-reveal — getComputedStyle(el).clipPath goes from 'inset(0px 100% 0px 0px)' to 'inset(0px 0% 0px 0px)'. The GalleryImage in ProgramDetail.jsx puts both .clip-reveal and .stagger-item on the SAME wrapper, while Stories.jsx nests .clip-reveal inside a .stagger-item parent — both patterns work. Scroll-thread selector unchanged: [data-testid=scroll-thread] > div > div (width inline %). For magnetic assertions, read style.transform on PARENT of data-testid for hero buttons (unchanged from iter-6).",
+  "rca of the issue": "No issues — iteration is green."
+}

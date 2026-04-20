@@ -99,3 +99,62 @@ export function useRipple() {
   };
   return onClick;
 }
+
+/* Parallax — translates element on Y based on scroll position relative to viewport center.
+   strength: positive = moves slower than scroll (appears to drift up), negative = opposite */
+export function useParallax(strength = 0.18) {
+  const ref = useRef(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    let raf = 0;
+    const onScroll = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const r = el.getBoundingClientRect();
+        const vh = window.innerHeight;
+        const centerOffset = (r.top + r.height / 2) - vh / 2;
+        el.style.transform = `translate3d(0, ${(-centerOffset * strength).toFixed(2)}px, 0)`;
+      });
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    return () => { window.removeEventListener('scroll', onScroll); cancelAnimationFrame(raf); };
+  }, [strength]);
+  return ref;
+}
+
+/* Stagger reveal — adds .in class to each child in sequence when container enters viewport */
+export function useStagger({ step = 90, threshold = 0.15, selector = '[data-stagger-item]' } = {}) {
+  const ref = useRef(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const items = Array.from(el.querySelectorAll(selector));
+    const io = new IntersectionObserver(([e]) => {
+      if (!e.isIntersecting) return;
+      items.forEach((it, i) => {
+        setTimeout(() => it.classList.add('in'), i * step);
+      });
+      io.disconnect();
+    }, { threshold });
+    io.observe(el);
+    return () => io.disconnect();
+  }, [step, threshold, selector]);
+  return ref;
+}
+
+/* Clip-path image reveal on scroll — sweeps the image in as it enters viewport */
+export function useClipReveal() {
+  const ref = useRef(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) { el.classList.add('in'); io.disconnect(); }
+    }, { threshold: 0.2 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  return ref;
+}

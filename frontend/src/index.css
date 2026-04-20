@@ -277,3 +277,22 @@ body::before {
 @media (prefers-reduced-motion: reduce) {
   .word-rise, .underline-draw, .fade-up-delay, .badge-float, .date-chip, .blob-morph, .shimmer-ink, .dew, .spider-wobble, .web-spin, .web-spin-slow, .float-slow { animation: none !important; }
 }
+
+/* Stagger reveal items */
+.stagger-item { opacity: 0; transform: translateY(28px); transition: opacity .85s cubic-bezier(.2,.7,.2,1), transform .95s cubic-bezier(.2,.7,.2,1); }
+.stagger-item.in { opacity: 1; transform: translateY(0); }
+
+/* Clip-path image sweep reveal */
+.clip-reveal { clip-path: inset(0 100% 0 0); transition: clip-path 1.15s cubic-bezier(.76,0,.24,1); }
+.clip-reveal.in { clip-path: inset(0 0% 0 0); }
+
+/* Image inside clip-reveal: scale down to counter slight crop */
+.clip-reveal img { transform: scale(1.08); transition: transform 1.8s cubic-bezier(.2,.7,.2,1); }
+.clip-reveal.in img { transform: scale(1); }
+
+/* Parallax container - smooth hw accel */
+.parallax { will-change: transform; }
+
+@media (prefers-reduced-motion: reduce) {
+  .clip-reveal, .clip-reveal img, .stagger-item { transition: none !important; transform: none !important; clip-path: none !important; opacity: 1 !important; }
+}

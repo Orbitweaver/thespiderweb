@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowUpRight } from 'lucide-react';
 import { SpiderWeb } from './SpiderWeb';
+import { useStagger } from '../lib/interactions';
 
 export const stories = [
   {
@@ -71,6 +72,7 @@ function useReveal() {
 export default function Stories() {
   const r = useReveal();
   const navigate = useNavigate();
+  const gridStagger = useStagger({ step: 160 });
   const [featured, ...rest] = stories;
 
   return (
@@ -85,12 +87,14 @@ export default function Stories() {
           <p className="max-w-md text-[var(--ink-soft)]">A monthly dispatch of student work, pedagogy notes, and the occasional recipe from the library cafe.</p>
         </div>
 
-        <div className="grid lg:grid-cols-12 gap-6">
+        <div ref={gridStagger} className="grid lg:grid-cols-12 gap-6">
           {/* Featured */}
-          <article data-testid={`story-${featured.slug}`} className="lg:col-span-7 tilt rounded-3xl overflow-hidden border border-[rgba(43,33,64,0.08)] bg-white" data-web-anchor>
+          <article data-testid={`story-${featured.slug}`} data-stagger-item className="stagger-item lg:col-span-7 tilt rounded-3xl overflow-hidden border border-[rgba(43,33,64,0.08)] bg-white" data-web-anchor>
             <div className="relative aspect-[16/10] overflow-hidden">
-              <img src={featured.img} alt="" className="w-full h-full object-cover transition-transform duration-700 hover:scale-105" loading="lazy" />
-              <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-[var(--cream)] text-[10px] tracking-[0.28em] uppercase">{featured.tag}</div>
+              <div className="clip-reveal stagger-item absolute inset-0" data-stagger-item>
+                <img src={featured.img} alt="" className="w-full h-full object-cover transition-transform duration-700 hover:scale-105" loading="lazy" />
+              </div>
+              <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-[var(--cream)] text-[10px] tracking-[0.28em] uppercase z-10">{featured.tag}</div>
             </div>
             <div className="p-8">
               <div className="text-[11px] uppercase tracking-[0.25em] text-[var(--ink-soft)] mb-3">{featured.date} · {featured.read}</div>
@@ -106,8 +110,8 @@ export default function Stories() {
           {/* side grid */}
           <div className="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-6">
             {rest.map(s => (
-              <article key={s.slug} data-testid={`story-${s.slug}`} className="flex gap-4 p-5 rounded-2xl bg-white border border-[rgba(43,33,64,0.08)] tilt" data-web-anchor>
-                <div className="w-24 h-24 shrink-0 rounded-xl overflow-hidden">
+              <article key={s.slug} data-testid={`story-${s.slug}`} data-stagger-item className="stagger-item flex gap-4 p-5 rounded-2xl bg-white border border-[rgba(43,33,64,0.08)] tilt" data-web-anchor>
+                <div className="w-24 h-24 shrink-0 rounded-xl overflow-hidden clip-reveal stagger-item" data-stagger-item>
                   <img src={s.img} alt="" className="w-full h-full object-cover" loading="lazy" />
                 </div>
                 <div className="min-w-0">
