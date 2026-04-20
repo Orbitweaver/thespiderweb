@@ -95,7 +95,7 @@ export default function MobileDrawer({ open, onClose }) {
         <button
           onClick={onClose}
           data-testid="drawer-close-btn"
-          className="absolute top-6 left-6 w-11 h-11 rounded-full border border-white/25 bg-white/5 flex items-center justify-center hover:bg-white/15 transition-colors"
+          className="absolute top-6 left-6 z-20 w-11 h-11 rounded-full border border-white/25 bg-white/5 flex items-center justify-center hover:bg-white/15 transition-colors"
           style={{
             opacity: visible ? 1 : 0,
             transform: visible ? 'rotate(0)' : 'rotate(-90deg)',
@@ -107,7 +107,7 @@ export default function MobileDrawer({ open, onClose }) {
 
         {/* Brand label */}
         <div
-          className="absolute top-7 right-6 text-right"
+          className="absolute top-7 right-6 z-20 text-right"
           style={{
             opacity: visible ? 1 : 0,
             transform: visible ? 'translateY(0)' : 'translateY(-12px)',
