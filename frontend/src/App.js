@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { Toaster } from 'sonner';
 import Nav from './components/Nav';
 import WebCursor from './components/WebCursor';
+import ScrollThread from './components/ScrollThread';
 import { Hero, About, Academics, Admissions, Events, Contact, Footer } from './components/Sections';
 import Timeline from './components/Timeline';
 import Stories from './components/Stories';
@@ -51,6 +52,7 @@ function App() {
     <div className="App relative">
       <BrowserRouter>
         <WebCursor />
+        <ScrollThread />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/programs/:slug" element={<ProgramDetail />} />
