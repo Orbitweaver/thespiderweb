@@ -125,3 +125,57 @@ class TestEvents:
         # Deleting again => 404
         r3 = client.delete(f"{API}/events/{eid}")
         assert r3.status_code == 404
+
+
+# Newsletter
+class TestNewsletter:
+    def test_subscribe_valid_email(self, client):
+        email = f"TEST_news_{uuid_suffix()}@example.com"
+        r = client.post(f"{API}/newsletter/subscribe", json={"email": email})
+        assert r.status_code == 200, r.text
+        body = r.json()
+        assert body["email"] == email
+        assert body["sent_welcome"] is False  # RESEND_API_KEY not set
+        assert "id" in body
+        assert "created_at" in body
+        assert isinstance(body["id"], str) and len(body["id"]) > 0
+
+    def test_subscribe_idempotent(self, client):
+        email = f"TEST_dup_{uuid_suffix()}@example.com"
+        r1 = client.post(f"{API}/newsletter/subscribe", json={"email": email})
+        assert r1.status_code == 200
+        first = r1.json()
+
+        r2 = client.post(f"{API}/newsletter/subscribe", json={"email": email})
+        assert r2.status_code == 200
+        second = r2.json()
+        # Same id, same record returned
+        assert second["id"] == first["id"]
+        assert second["email"] == first["email"]
+        assert second["created_at"] == first["created_at"]
+
+    def test_subscribe_invalid_email(self, client):
+        r = client.post(f"{API}/newsletter/subscribe", json={"email": "not-an-email"})
+        assert r.status_code == 422
+
+    def test_list_newsletter_no_mongo_id(self, client):
+        # Seed one subscriber first
+        email = f"TEST_list_{uuid_suffix()}@example.com"
+        client.post(f"{API}/newsletter/subscribe", json={"email": email})
+
+        r = client.get(f"{API}/newsletter")
+        assert r.status_code == 200
+        items = r.json()
+        assert isinstance(items, list)
+        assert len(items) >= 1
+        for it in items:
+            assert "_id" not in it
+            assert "id" in it
+            assert "email" in it
+            assert "sent_welcome" in it
+        assert any(it["email"] == email for it in items)
+
+
+def uuid_suffix():
+    import uuid as _u
+    return _u.uuid4().hex[:10]

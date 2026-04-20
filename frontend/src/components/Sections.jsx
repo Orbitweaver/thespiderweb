@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { toast } from 'sonner';
 import { SpiderWeb, Spider, HangingWeb, AsymmetricWeb, BrokenWeb, MoonWeb } from './SpiderWeb';
+import { Link } from 'react-router-dom';
+import Newsletter from './Newsletter';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
@@ -135,12 +137,12 @@ export const About = () => {
 
 /* ACADEMICS */
 const programs = [
-  { icon: Leaf, name: 'Lower School', grades: 'K–5', color: 'var(--mint)', desc: 'Phonics, nature journaling, mixed-age studios, and slow mornings outside.' },
-  { icon: Beaker, name: 'Middle School', grades: '6–8', color: 'var(--peach)', desc: 'Deep project blocks — cartography, civics, chemistry, and chamber music.' },
-  { icon: BookOpen, name: 'Upper School', grades: '9–12', color: 'var(--lavender)', desc: 'Honors seminars, AP options, and a two-year capstone thesis.' },
-  { icon: Music, name: 'Arts Conservatory', grades: 'Elective', color: '#F7D9E4', desc: 'Strings, ceramics, printmaking, film — nine ateliers led by practicing artists.' },
-  { icon: Trophy, name: 'Athletics', grades: 'All', color: '#D9EAF7', desc: 'No-cut teams, 14 sports, and a renowned cross-country program.' },
-  { icon: Compass, name: 'Global Year', grades: 'Gr. 11', color: '#FFE7A8', desc: 'A term abroad embedded in partner schools — Kyoto, Oaxaca, Edinburgh.' },
+  { icon: Leaf, slug: 'lower-school', name: 'Lower School', grades: 'K–5', color: 'var(--mint)', desc: 'Phonics, nature journaling, mixed-age studios, and slow mornings outside.' },
+  { icon: Beaker, slug: 'middle-school', name: 'Middle School', grades: '6–8', color: 'var(--peach)', desc: 'Deep project blocks — cartography, civics, chemistry, and chamber music.' },
+  { icon: BookOpen, slug: 'upper-school', name: 'Upper School', grades: '9–12', color: 'var(--lavender)', desc: 'Honors seminars, AP options, and a two-year capstone thesis.' },
+  { icon: Music, slug: 'arts-conservatory', name: 'Arts Conservatory', grades: 'Elective', color: '#F7D9E4', desc: 'Strings, ceramics, printmaking, film — nine ateliers led by practicing artists.' },
+  { icon: Trophy, slug: 'athletics', name: 'Athletics', grades: 'All', color: '#D9EAF7', desc: 'No-cut teams, 14 sports, and a renowned cross-country program.' },
+  { icon: Compass, slug: 'global-year', name: 'Global Year', grades: 'Gr. 11', color: '#FFE7A8', desc: 'A term abroad embedded in partner schools — Kyoto, Oaxaca, Edinburgh.' },
 ];
 
 export const Academics = () => {
@@ -158,7 +160,7 @@ export const Academics = () => {
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {programs.map((p, i) => (
-            <article key={i} className="group relative p-7 rounded-3xl border border-[rgba(43,33,64,0.08)] bg-white tilt overflow-hidden" data-testid={`program-${i}`} data-web-anchor>
+            <Link key={i} to={`/programs/${p.slug}`} className="group relative p-7 rounded-3xl border border-[rgba(43,33,64,0.08)] bg-white tilt overflow-hidden block" data-testid={`program-${i}`} data-web-anchor>
               <div className="absolute -right-16 -top-16 w-52 h-52 rounded-full" style={{ background: p.color, opacity: 0.65 }} />
               <div className="relative">
                 <div className="flex items-center justify-between">
@@ -171,7 +173,7 @@ export const Academics = () => {
                   Explore <ArrowUpRight className="w-4 h-4" />
                 </div>
               </div>
-            </article>
+            </Link>
           ))}
         </div>
       </div>
@@ -323,6 +325,18 @@ export const Footer = () => (
   <footer className="relative bg-[var(--ink)] text-[var(--cream)] pt-20 pb-10 overflow-hidden" data-testid="site-footer">
     <div className="absolute -right-24 -top-24 opacity-20"><SpiderWeb size={420} stroke="rgba(201,182,228,0.6)" spin /></div>
     <div className="max-w-7xl mx-auto px-6 lg:px-10 relative z-10">
+      {/* Newsletter band */}
+      <div className="mb-16 pb-12 border-b border-white/10 grid lg:grid-cols-12 gap-8 items-center">
+        <div className="lg:col-span-6">
+          <div className="text-[11px] uppercase tracking-[0.28em] text-[var(--lavender)] mb-3">Newsletter</div>
+          <h3 className="font-display text-3xl lg:text-4xl leading-[1.05]">Letters from the <em className="italic text-[var(--peach)]">weavers' desk</em> — once a month.</h3>
+        </div>
+        <div className="lg:col-span-6">
+          <Newsletter variant="footer" />
+          <p className="text-[12px] text-[var(--cream)]/60 mt-3">Student work, admissions windows, and the occasional recipe. Unsubscribe anytime.</p>
+        </div>
+      </div>
+
       <div className="grid md:grid-cols-4 gap-10">
         <div>
           <div className="flex items-center gap-3 mb-4"><Spider size={30} /><span className="font-display text-2xl">Silkstrand</span></div>
@@ -331,7 +345,7 @@ export const Footer = () => (
         {[
           { t: 'Explore', l: ['About','Academics','Arts','Athletics'] },
           { t: 'Admissions', l: ['Inquire','Visit','Tuition','Financial Aid'] },
-          { t: 'Community', l: ['Events','Parents','Alumni','Careers'] },
+          { t: 'Community', l: ['Events','Stories','Alumni','Careers'] },
         ].map(c => (
           <div key={c.t}>
             <div className="text-[11px] uppercase tracking-[0.28em] text-[var(--lavender)] mb-4">{c.t}</div>

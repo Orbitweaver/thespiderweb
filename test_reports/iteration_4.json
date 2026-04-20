@@ -1,0 +1,41 @@
+{
+  "summary": "Iteration 4 tests Stories section, /programs/:slug routes, and Newsletter integration. Backend: 11/11 pytest pass (added 4 newsletter tests: valid subscribe 200 with sent_welcome=false as RESEND_API_KEY unset, idempotent returns same id/created_at, invalid email 422, list endpoint excludes _id). Contact/Admissions/Events regressions all green. Frontend on live preview URL: home loads with hero; Stories section (data-testid='stories-section') renders between Events and Contact in correct DOM order (y: events=8529 < stories=9531 < contact=10616); all 5 story testids present (story-mycelium-and-math, story-kyoto-letters, story-the-weaver-library, story-chamber-music-strand, story-a-gentle-curriculum); nav-stories click smooth-scrolls #stories into view (top=-0.4 at 1920x1080). Newsletter form in footer submits successfully with toast 'Welcome to the thread.' (sent_welcome=false as expected since RESEND_API_KEY not set; graceful fallback confirmed). Program detail pages: /programs/lower-school and /programs/arts-conservatory render with correct testid program-page-{slug}, hero H1, 4 pillars (Pillar·01..04), 5-item week <ol>, 'From the studios.' gallery heading, and 3 other-program cards (program-other-*). Back button returns home. Academics card click (program-0) navigates to /programs/lower-school. Regression: contact form submits ('Thanks — we\\'ll be in touch soon.'), admissions form submits ('Inquiry received — our admissions team will reach out within 48 hours.'), events list shows 5 cards. One functional bug found: Apply button on program detail page fails to scroll to #admissions after navigating home (100ms setTimeout races with React Router's Home route mount; admissions top remained at y=4807 even after 3.5s wait). All other review_request criteria verified end-to-end.",
+  "backend_issues": { "critical": [], "minor": [] },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [
+      {
+        "flow": "Program detail -> Apply button -> Admissions",
+        "issue": "Apply button (data-testid='program-apply-btn' and 'program-inquire-btn') calls navigate('/') followed by setTimeout(..., 100) to scrollIntoView('#admissions'). The 100ms delay is too short for React Router to mount the Home route, its sections to layout, and for the #admissions element to exist. Result: after clicking Apply, user lands at hero top instead of admissions. Observed admissions rect.top = 4807px (should be ~0) even 3.5s after click. Back button (program-back-btn) works fine because it only returns home without scroll. Fix: use state flag + useEffect in Home to scrollIntoView when a navigate state like {scrollTo:'admissions'} is present, or increase setTimeout to 600-800ms, or use hash route '/#admissions' with a scroll-to-hash effect.",
+        "affected_selectors": ["[data-testid='program-apply-btn']", "[data-testid='program-inquire-btn']"]
+      }
+    ],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/backend_test.py",
+    "/app/test_reports/pytest/pytest_results.xml"
+  ],
+  "action_items": [
+    "Fix Apply/Inquire button cross-route scroll in ProgramDetail.jsx: pass navigate('/', {state:{scrollTo:'admissions'}}) and in Home/App.js read useLocation().state on mount to scrollIntoView once sections are laid out (requestAnimationFrame or small timeout after mount). Alternative: change to <Link to='/#admissions'> and add hash-scroll effect in Home."
+  ],
+  "critical_code_review_comments": [
+    "ProgramDetail.jsx lines 34 and 106: setTimeout(100ms) for cross-route scrollIntoView is a well-known race condition with React Router. Works sometimes, fails under CSS/image load latency. Use navigation state or hash + useEffect pattern.",
+    "Newsletter.jsx: toast error message 'Could not subscribe. Please check your email.' is shown for any axios failure (network, 500, 422). For 422 (invalid email) the message is accurate; for a 500 it misleads the user. Consider distinguishing err.response?.status === 422 from others.",
+    "server.py /api/newsletter/subscribe: idempotent path returns existing record but silently never re-attempts welcome email — if a previous call failed to send (sent_welcome=false) and RESEND_API_KEY later becomes available, subsequent subscribes by the same user will still return sent_welcome=false without retrying. Acceptable behaviour but worth documenting.",
+    "server.py uses deprecated FastAPI @app.on_event('startup'/'shutdown') — should migrate to lifespan context manager. Unchanged from iter 3 (known, non-blocking).",
+    "Stories.jsx: 'Read story' affordance on featured article is a <span>, not a clickable link, though cards have 'tilt' hover class suggesting interactivity. If /stories/:slug deep links are planned, wire <Link> here; otherwise remove hover-scale on inner img to avoid false affordance.",
+    "Apply/Inquire buttons have identical copy/CTA but different testids — minor redundancy; fine.",
+    "programs.js hero image URLs are Unsplash CDN — if CSP tightens later, consider local assets or a fallback overlay."
+  ],
+  "updated_files": [
+    "/app/backend/tests/backend_test.py (added TestNewsletter class with 4 tests + uuid_suffix helper)"
+  ],
+  "success_rate": { "backend": "100% (11/11)", "frontend": "~92% (13/14 flows; Apply-btn scroll-to-admissions fails cross-route)" },
+  "test_credentials": "N/A - no auth in app",
+  "seed_data_creation": "Playwright inserted live records: 2 newsletter subscribers (TEST_pw_* emails), 1 admission (TEST_Iter4_S), 1 contact (TEST_iter4). Pytest added TEST_news_*, TEST_dup_*, TEST_list_* newsletter docs and a TEST_Event that was also deleted.",
+  "retest_needed": true,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Preview URL: https://web-academy-design.preview.emergentagent.com. Key testids: stories-section, story-{slug} x5, nav-stories, newsletter-form/email/submit, program-page-{slug}, program-back-btn, program-apply-btn, program-inquire-btn, program-other-{slug}, program-{0..5} on academics cards. Program slugs: lower-school, middle-school, upper-school, arts-conservatory, athletics, global-year. Newsletter backend: RESEND_API_KEY intentionally unset -> sent_welcome:false expected. Section order on home: home > about > timeline > academics > admissions > events > stories > contact. At 1920x1080 viewport nav-stories scrolls precisely; at 1920x4000 #stories top was ~1905 because viewport is taller than useful — use 1080 for scroll assertions. Known open bug: cross-route Apply button scroll race (see action_items).",
+  "rca of the issue": "Apply button scroll bug RCA — ProgramDetail.jsx uses:\n  onClick={() => { navigate('/'); setTimeout(() => document.getElementById('admissions')?.scrollIntoView({ behavior: 'smooth' }), 100); }}\nWhen navigate('/') fires, React unmounts ProgramDetail and mounts Home. Home renders Hero, About, Timeline, Academics first; Admissions appears only after its component tree reconciles. With images/fonts loading the #admissions DOM node is not present at t+100ms, so scrollIntoView silently no-ops. Reproduction: (1) visit /programs/lower-school (2) click program-apply-btn (3) observe URL becomes / but window.scrollY stays ~0. Mitigation: pass navigation state { scrollTo: 'admissions' } and add useEffect in Home reading useLocation().state -> requestAnimationFrame loop or setTimeout 600ms to scroll once the element exists. Alternatively, use Link to='/#admissions' with a hash-aware scroll effect. Applied fix: none (reported to main agent as per fix-scope rules)."
+}

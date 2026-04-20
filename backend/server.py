@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
 import os
+import asyncio
 import logging
 from pathlib import Path
 from pydantic import BaseModel, Field, EmailStr
@@ -16,6 +17,18 @@ load_dotenv(ROOT_DIR / '.env')
 mongo_url = os.environ['MONGO_URL']
 client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
+
+# Resend — optional; only enabled if key present
+RESEND_API_KEY = os.environ.get('RESEND_API_KEY', '').strip()
+SENDER_EMAIL = os.environ.get('SENDER_EMAIL', 'onboarding@resend.dev').strip()
+resend = None
+if RESEND_API_KEY:
+    try:
+        import resend as _resend
+        _resend.api_key = RESEND_API_KEY
+        resend = _resend
+    except Exception:
+        resend = None
 
 app = FastAPI()
 api_router = APIRouter(prefix="/api")
@@ -135,6 +148,71 @@ async def delete_event(event_id: str):
     if res.deleted_count == 0:
         raise HTTPException(status_code=404, detail="Event not found")
     return {"ok": True}
+
+
+# Newsletter
+class NewsletterCreate(BaseModel):
+    email: EmailStr
+
+class NewsletterOut(BaseModel):
+    id: str
+    email: str
+    sent_welcome: bool
+    created_at: str
+
+
+WELCOME_HTML = """<!doctype html>
+<html><body style="margin:0;padding:32px;background:#FBF7F2;font-family:Georgia,serif;color:#2B2140;">
+<table width="520" align="center" cellpadding="0" cellspacing="0" style="background:#fff;border-radius:20px;padding:36px;border:1px solid #efe6d8;">
+<tr><td>
+<p style="letter-spacing:0.24em;text-transform:uppercase;font-size:11px;color:#8C6FC6;margin:0 0 18px 0;">Silkstrand Academy</p>
+<h1 style="font-family:Georgia,serif;font-size:34px;line-height:1.1;margin:0 0 12px 0;">You're on the thread.</h1>
+<p style="font-size:15px;line-height:1.65;color:#564A73;margin:0 0 18px 0;">Thank you for joining our monthly letter. Expect gentle dispatches — student work, upcoming admissions windows, campus nature notes, and the occasional recipe from the Weaver Library cafe.</p>
+<p style="font-size:15px;line-height:1.65;color:#564A73;margin:0 0 28px 0;">We write once a month. You can unsubscribe at any time — no thread held too tightly.</p>
+<p style="font-family:Georgia,serif;font-style:italic;color:#5FB288;margin:0;">— The Silkstrand team</p>
+</td></tr>
+</table>
+</body></html>
+"""
+
+
+@api_router.post("/newsletter/subscribe", response_model=NewsletterOut)
+async def subscribe(payload: NewsletterCreate):
+    existing = await db.newsletter.find_one({"email": payload.email}, {"_id": 0})
+    if existing:
+        return NewsletterOut(**existing)
+
+    sent = False
+    if resend is not None:
+        try:
+            await asyncio.to_thread(
+                resend.Emails.send,
+                {
+                    "from": SENDER_EMAIL,
+                    "to": [payload.email],
+                    "subject": "You're on the thread — Silkstrand Academy",
+                    "html": WELCOME_HTML,
+                },
+            )
+            sent = True
+        except Exception as e:
+            logger.error(f"Resend failed: {e}")
+
+    doc = {
+        "id": str(uuid.uuid4()),
+        "email": payload.email,
+        "sent_welcome": sent,
+        "created_at": now_iso(),
+    }
+    await db.newsletter.insert_one(doc.copy())
+    doc.pop("_id", None)
+    return NewsletterOut(**doc)
+
+
+@api_router.get("/newsletter", response_model=List[NewsletterOut])
+async def list_newsletter():
+    items = await db.newsletter.find({}, {"_id": 0}).sort("created_at", -1).to_list(500)
+    return items
 
 
 # Seed demo events if none present
