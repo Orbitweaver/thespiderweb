@@ -24,13 +24,16 @@ function useReveal() {
 }
 
 /* Staggered letter reveal for hero headline */
-const SplitWords = ({ text, className = '', delay = 0 }) => {
+const SplitWords = ({ text, className = '', delay = 0, gradient = false }) => {
   const words = text.split(' ');
   return (
     <span className={className}>
       {words.map((w, i) => (
-        <span key={i} className="inline-block overflow-hidden align-baseline">
-          <span className="inline-block word-rise" style={{ animationDelay: `${delay + i * 90}ms` }}>
+        <span key={i} className="inline-block align-baseline" style={{ paddingBottom: '0.1em' }}>
+          <span
+            className={`inline-block word-rise ${gradient ? 'shimmer-ink' : ''}`}
+            style={{ animationDelay: `${delay + i * 90}ms` }}
+          >
             {w}&nbsp;
           </span>
         </span>
@@ -90,7 +93,7 @@ export const Hero = () => {
           </div>
           <h1 className="font-display text-[56px] sm:text-[72px] lg:text-[104px] leading-[0.92] tracking-[-0.03em]">
             <SplitWords text="Weaving" />
-            <em className="italic shimmer-ink"><SplitWords text=" curious" delay={360} /></em>
+            <em className="italic"><SplitWords text=" curious" delay={360} gradient /></em>
             <br/>
             <SplitWords text="minds, one" delay={720} />
             <span className="relative inline-block">

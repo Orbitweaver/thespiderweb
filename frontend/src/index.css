@@ -155,18 +155,27 @@ body::before {
 }
 .spider-wobble { animation: wobble 2.6s ease-in-out infinite; transform-origin: center; }
 
-/* Shimmer on italic hero word */
+/* Shimmer on italic hero word — richer gradient with more frequent color pass */
 @keyframes shimmerText {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
 }
 .shimmer-ink {
-  background: linear-gradient(90deg, var(--lavender-deep) 0%, var(--peach-deep) 40%, var(--mint-deep) 70%, var(--lavender-deep) 100%);
+  background: linear-gradient(
+    90deg,
+    #8C6FC6 0%,
+    #F08F5F 18%,
+    #5FB288 36%,
+    #C9B6E4 54%,
+    #F08F5F 72%,
+    #8C6FC6 90%,
+    #8C6FC6 100%
+  );
   background-size: 200% auto;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  animation: shimmerText 6s linear infinite;
+  animation: shimmerText 4s linear infinite;
 }
 
 /* Path draw-in */
@@ -192,9 +201,9 @@ body::before {
 
 /* ===== New micro-interactions ===== */
 
-/* Word rise (staggered letters) */
+/* Word rise (staggered letters) — no mask, so descenders (g, y, p) are never clipped */
 @keyframes wordRise {
-  from { transform: translateY(100%); opacity: 0; }
+  from { transform: translateY(30%); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
 }
 .word-rise { animation: wordRise .9s cubic-bezier(.2,.7,.2,1) both; }
