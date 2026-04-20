@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { toast } from 'sonner';
-import { SpiderWeb, Spider } from './SpiderWeb';
+import { SpiderWeb, Spider, HangingWeb, AsymmetricWeb, BrokenWeb, MoonWeb } from './SpiderWeb';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
@@ -61,7 +61,7 @@ export const Hero = () => {
             <Sparkles className="w-3.5 h-3.5" /> Admissions 2026 — now open
           </div>
           <h1 className="font-display text-[56px] sm:text-[72px] lg:text-[104px] leading-[0.92] tracking-[-0.03em]">
-            Weaving <em className="italic text-[var(--lavender-deep)]">curious</em><br/>
+            Weaving <em className="italic shimmer-ink">curious</em><br/>
             minds, one <span className="relative inline-block">
               thread
               <svg className="absolute -bottom-4 left-0 w-full" viewBox="0 0 220 16" fill="none"><path d="M2 10 C 60 2, 160 18, 218 6" stroke="var(--peach-deep)" strokeWidth="3" strokeLinecap="round"/></svg>
@@ -106,8 +106,10 @@ export const Hero = () => {
 export const About = () => {
   const r = useReveal();
   return (
-    <section id="about" className="relative py-28 bg-[var(--cream-2)]" data-testid="about-section">
-      <div className="max-w-7xl mx-auto px-6 lg:px-10 grid lg:grid-cols-12 gap-12">
+    <section id="about" className="relative py-28 bg-[var(--cream-2)] overflow-hidden" data-testid="about-section">
+      <div className="absolute -top-10 right-10 opacity-70 pointer-events-none"><HangingWeb size={140} threadLen={80} withSpider /></div>
+      <div className="absolute bottom-0 left-0 opacity-50 pointer-events-none"><BrokenWeb size={220} /></div>
+      <div className="max-w-7xl mx-auto px-6 lg:px-10 grid lg:grid-cols-12 gap-12 relative z-10">
         <div ref={r} className="reveal lg:col-span-5">
           <div className="text-[11px] tracking-[0.3em] uppercase text-[var(--lavender-deep)] mb-4">About · 01</div>
           <h2 className="font-display text-5xl lg:text-6xl leading-[1] tracking-tight">A school spun from intention.</h2>
@@ -244,8 +246,10 @@ export const Events = () => {
   }, []);
   const catColor = { academic: 'var(--lavender)', sports: 'var(--mint)', arts: 'var(--peach)', community: '#F7D9E4' };
   return (
-    <section id="events" className="relative py-28" data-testid="events-section">
-      <div className="max-w-7xl mx-auto px-6 lg:px-10">
+    <section id="events" className="relative py-28 overflow-hidden" data-testid="events-section">
+      <div className="absolute -right-24 top-24 opacity-40 pointer-events-none float-slow"><AsymmetricWeb size={260} stroke="rgba(240,143,95,0.45)" /></div>
+      <div className="absolute -left-10 bottom-20 opacity-40 pointer-events-none"><MoonWeb size={200} /></div>
+      <div className="max-w-7xl mx-auto px-6 lg:px-10 relative z-10">
         <div ref={r} className="reveal mb-14">
           <div className="text-[11px] tracking-[0.3em] uppercase text-[var(--lavender-deep)] mb-4">Events · 04</div>
           <h2 className="font-display text-5xl lg:text-6xl tracking-tight">On the calendar.</h2>

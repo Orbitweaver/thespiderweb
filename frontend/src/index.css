@@ -138,3 +138,49 @@ body::before {
 /* floating webs */
 .float-slow { animation: float 11s ease-in-out infinite; }
 @keyframes float { 50% { transform: translateY(-14px); } }
+
+/* Dew drop shimmer */
+@keyframes dewPulse {
+  0%, 100% { transform: scale(1); filter: drop-shadow(0 0 0 rgba(181,227,204,0)); }
+  50% { transform: scale(1.18); filter: drop-shadow(0 0 6px rgba(181,227,204,0.8)); }
+}
+.dew { transform-origin: center; animation: dewPulse 3.4s ease-in-out infinite; transform-box: fill-box; }
+
+/* Spider wobble */
+@keyframes wobble {
+  0%, 100% { transform: translate(0, 0) rotate(0); }
+  25% { transform: translate(1px, -2px) rotate(-3deg); }
+  50% { transform: translate(-1px, 1px) rotate(2deg); }
+  75% { transform: translate(2px, -1px) rotate(-2deg); }
+}
+.spider-wobble { animation: wobble 2.6s ease-in-out infinite; transform-origin: center; }
+
+/* Shimmer on italic hero word */
+@keyframes shimmerText {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.shimmer-ink {
+  background: linear-gradient(90deg, var(--lavender-deep) 0%, var(--peach-deep) 40%, var(--mint-deep) 70%, var(--lavender-deep) 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmerText 6s linear infinite;
+}
+
+/* Path draw-in */
+@keyframes drawLine {
+  from { stroke-dashoffset: 800; }
+  to { stroke-dashoffset: 0; }
+}
+.path-draw { stroke-dasharray: 800; animation: drawLine 2.4s cubic-bezier(.2,.7,.2,1) forwards; }
+
+/* Card wobble on hover */
+.tilt:hover { animation: cardWobble 0.8s ease; }
+@keyframes cardWobble {
+  0% { transform: translateY(-6px) rotate(-0.4deg); }
+  25% { transform: translateY(-8px) rotate(0.6deg); }
+  55% { transform: translateY(-6px) rotate(-0.3deg); }
+  100% { transform: translateY(-6px) rotate(-0.4deg); }
+}

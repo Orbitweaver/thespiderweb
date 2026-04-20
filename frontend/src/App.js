@@ -4,6 +4,7 @@ import { Toaster } from 'sonner';
 import Nav from './components/Nav';
 import WebCursor from './components/WebCursor';
 import { Hero, About, Academics, Admissions, Events, Contact, Footer } from './components/Sections';
+import Timeline from './components/Timeline';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <main>
         <Hero />
         <About />
+        <Timeline />
         <Academics />
         <Admissions />
         <Events />
