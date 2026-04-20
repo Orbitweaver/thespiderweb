@@ -184,3 +184,8 @@ body::before {
   55% { transform: translateY(-6px) rotate(-0.3deg); }
   100% { transform: translateY(-6px) rotate(-0.4deg); }
 }
+
+/* Web disc slow rotation */
+@keyframes spinSlow { to { transform: rotate(360deg); } }
+.web-spin-slow { animation: spinSlow 45s linear infinite; transform-origin: center; }
+.group:hover .web-spin-slow { animation-duration: 12s; }
