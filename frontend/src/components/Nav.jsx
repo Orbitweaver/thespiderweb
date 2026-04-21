@@ -44,8 +44,8 @@ export default function Nav() {
           <button onClick={() => go('home')} className="flex items-center gap-3 group" data-testid="nav-logo">
             <Spider size={28} wobble />
             <div className="leading-none text-left">
-              <div className="font-display text-[22px] tracking-tight">Silkstrand</div>
-              <div className="text-[10px] uppercase tracking-[0.28em] text-[var(--ink-soft)]">Academy · Est. 1974</div>
+              <div className="font-display text-[22px] tracking-tight">The Web</div>
+              <div className="text-[10px] uppercase tracking-[0.28em] text-[var(--ink-soft)]">Boutique Online School</div>
             </div>
           </button>
           <nav className="hidden md:flex items-center gap-8">

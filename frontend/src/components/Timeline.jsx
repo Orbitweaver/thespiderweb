@@ -3,52 +3,44 @@ import { SpiderWeb, AsymmetricWeb } from './SpiderWeb';
 
 const milestones = [
   {
-    year: '1974',
-    title: 'First thread spun',
-    desc: 'Silkstrand opens with 42 students in a converted weaver\'s barn on Weaver Lane. Founder Ada Moreau believes a school should feel like a workshop — hands moving, minds quiet.',
-    alum: 'Inaugural class of 1974 — nine would later return as faculty.',
-    img: 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=900&q=80',
-    tone: 'sepia',
-  },
-  {
-    year: '1988',
-    title: 'Arts Conservatory launches',
-    desc: 'Nine studio ateliers open — ceramics, strings, printmaking, film, dance. Every student, K–12, spends one afternoon a week in a studio of their choosing.',
-    alum: 'Notable alum: composer Lio Tanaka (\'92), Pulitzer finalist for chamber work "Strand."',
-    img: 'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=900&q=80',
+    year: '01',
+    prompt: 'What if real and hard work was part of the curriculum?',
+    desc: 'We treat learning as labour — the kind that builds character. Every term, our students take on projects that matter: a family budget, a market survey, a neighbourhood cleanup.',
+    tag: 'Curriculum by doing',
+    img: 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=900&q=80',
     tone: 'warm',
   },
   {
-    year: '2001',
-    title: 'Global Year begins',
-    desc: 'Grade-11 students embark on term-abroad partnerships in Kyoto and Oaxaca. The program later expands to Edinburgh, Accra, and Istanbul — a quiet revolution in how we teach citizenship.',
-    alum: 'Partner schools now span 12 cities; 87% of upper-school students travel.',
-    img: 'https://images.unsplash.com/photo-1488190211105-8b0e65b80b4e?w=900&q=80',
+    year: '02',
+    prompt: 'What if villages were classrooms & communities were educators?',
+    desc: 'We believe every elder, every shopkeeper, every farmer has something to teach. Our syllabus invites them in — by interview, by walk, by workshop.',
+    tag: 'Community as faculty',
+    img: 'https://images.unsplash.com/photo-1540479859555-17af45c78602?w=900&q=80',
     tone: 'film',
   },
   {
-    year: '2012',
-    title: 'Wetland campus opens',
-    desc: 'A 22-acre ecology campus replaces the old barn. Gardens, ponds, solar-panelled studios, and the Weaver Library — a cedar-vaulted reading room designed by alumna Priya Khan (\'98).',
-    alum: 'LEED Platinum · home to 41 native bird species, tracked yearly by the 4th grade.',
-    img: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=900&q=80',
-    tone: 'film',
-  },
-  {
-    year: '2019',
-    title: 'Full K–12 program',
-    desc: 'Upper school grows to twelfth grade. The first capstone-thesis cohort defends projects ranging from fungal networks in the wetlands to a retelling of the Mahabharata as a graphic novel.',
-    alum: 'First graduating class: 58 students — 94% matriculated to their first-choice university.',
-    img: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=900&q=80',
+    year: '03',
+    prompt: 'What if schools were not defined by scores, but by curiosity?',
+    desc: 'We prepare students for Cambridge IGCSE — rigorously. But we measure ourselves by the questions they learn to ask, not only by the grades they earn.',
+    tag: 'Curiosity, first',
+    img: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=900&q=80',
     tone: 'clean',
   },
   {
-    year: '2026',
-    title: 'Today',
-    desc: 'A community of 820 students, 94 faculty, threads spun to 37 countries. This year\'s capstones include a translation of a Zapotec folktale and a study of mycelium-based concrete.',
-    alum: 'Still, the first rule hasn\'t changed: begin the day quiet, with a book, a window, and a friend.',
-    img: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=900&q=80',
+    year: '04',
+    prompt: 'What if factories became laboratories of real-world science?',
+    desc: 'A bakery is chemistry. A workshop is physics. A clinic is biology. Our students learn to see the science in the places they already pass every day.',
+    tag: 'Science, in place',
+    img: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=900&q=80',
     tone: 'crisp',
+  },
+  {
+    year: '05',
+    prompt: 'What if local markets taught Mathematics and Economics?',
+    desc: 'Supply, demand, weight, price, margin, seasonality — the local market is the richest textbook we have. Every week, our students read it.',
+    tag: 'Market as textbook',
+    img: 'https://images.unsplash.com/photo-1488459716781-31db52582fe9?w=900&q=80',
+    tone: 'warm',
   },
 ];
 
@@ -107,12 +99,12 @@ export default function Timeline() {
   }, []);
 
   const VIEW_W = 1000;
-  const VIEW_H = 1800;
+  const VIEW_H = 1500;
   const pathD = `M 500 40 
-    C 720 200, 280 280, 500 450
-    C 780 620, 220 700, 500 880
-    C 760 1050, 240 1130, 500 1310
-    C 760 1470, 240 1560, 500 1760`;
+    C 720 180, 280 260, 500 420
+    C 780 580, 220 660, 500 820
+    C 760 980, 240 1060, 500 1220
+    C 760 1360, 240 1450, 500 1480`;
 
   const visibleLen = Math.min(progress, 1) * pathLen;
 
@@ -126,9 +118,9 @@ export default function Timeline() {
       </div>
 
       <div className="max-w-7xl mx-auto px-6 lg:px-10 mb-14">
-        <div className="text-[11px] tracking-[0.3em] uppercase text-[var(--lavender-deep)] mb-4">Our Story · 02b</div>
-        <h2 className="font-display text-5xl lg:text-6xl tracking-tight leading-[1]">Threads through <em className="italic">time</em>.</h2>
-        <p className="mt-6 max-w-xl text-[var(--ink-soft)] text-[16px] leading-relaxed">Fifty-two years of weaving — archive frames from each decade, captured through a web.</p>
+        <div className="text-[11px] tracking-[0.3em] uppercase text-[var(--lavender-deep)] mb-4">Our Vision · 02b</div>
+        <h2 className="font-display text-5xl lg:text-6xl tracking-tight leading-[1]">Five <em className="italic">what-ifs</em> we live by.</h2>
+        <p className="mt-6 max-w-xl text-[var(--ink-soft)] text-[16px] leading-relaxed">The Web began as a series of questions — and we haven't stopped asking them. Scroll to follow the spider along the strand.</p>
       </div>
 
       <div className="relative max-w-5xl mx-auto px-6 lg:px-10">
@@ -152,7 +144,7 @@ export default function Timeline() {
             </linearGradient>
           </defs>
 
-          {[0.15, 0.32, 0.5, 0.66, 0.82].map((t, i) => {
+          {[0.18, 0.38, 0.58, 0.78].map((t, i) => {
             if (!pathRef.current || !pathLen) return null;
             const pt = pathRef.current.getPointAtLength(t * pathLen);
             const on = progress > t;
@@ -182,7 +174,7 @@ export default function Timeline() {
 
         <div className="relative" style={{ aspectRatio: `${VIEW_W} / ${VIEW_H}` }}>
           {milestones.map((m, i) => {
-            const yPct = (i / (milestones.length - 1)) * 94 + 3;
+            const yPct = (i / (milestones.length - 1)) * 92 + 4;
             const side = i % 2 === 0 ? 'left' : 'right';
             const isIn = visible.has(i);
             return (
@@ -204,12 +196,11 @@ export default function Timeline() {
                   <div className="flex-1 min-w-0">
                     <div className={`flex items-center gap-2 mb-2 ${side === 'left' ? 'flex-row-reverse' : ''}`}>
                       <span className="w-1.5 h-1.5 rounded-full bg-[var(--lavender-deep)]" />
-                      <span className="text-[10px] uppercase tracking-[0.3em] text-[var(--lavender-deep)]">Milestone · {String(i + 1).padStart(2, '0')}</span>
+                      <span className="text-[10px] uppercase tracking-[0.3em] text-[var(--lavender-deep)]">{m.tag}</span>
                     </div>
                     <div className="font-display text-5xl lg:text-6xl leading-none text-[var(--ink)]">{m.year}</div>
-                    <h3 className="font-display text-xl lg:text-2xl mt-3">{m.title}</h3>
-                    <p className="text-[13.5px] text-[var(--ink-soft)] mt-2 leading-relaxed">{m.desc}</p>
-                    <p className="mt-3 text-[12px] italic text-[var(--mint-deep)] border-l-2 pl-3 inline-block" style={{ borderColor: 'var(--mint-deep)', direction: 'ltr' }}>{m.alum}</p>
+                    <h3 className="font-display italic text-xl lg:text-2xl mt-3 leading-snug">{m.prompt}</h3>
+                    <p className="text-[13.5px] text-[var(--ink-soft)] mt-3 leading-relaxed">{m.desc}</p>
                   </div>
                 </div>
               </div>
@@ -221,16 +212,13 @@ export default function Timeline() {
   );
 }
 
-/* Circular image masked with spider web ring overlay */
 const WebDisc = ({ img, tone, index }) => {
   const size = 128;
   const spokes = 12;
   const rings = 5;
   return (
     <div className="shrink-0 relative group" style={{ width: size, height: size }}>
-      {/* outer faint glow */}
       <div className="absolute inset-0 rounded-full" style={{ background: 'radial-gradient(circle, rgba(140,111,198,0.18), transparent 70%)', transform: 'scale(1.35)' }} />
-      {/* image circle with vintage filter */}
       <div className="absolute inset-0 rounded-full overflow-hidden border-2" style={{ borderColor: 'rgba(43,33,64,0.12)' }}>
         <img
           src={img}
@@ -242,7 +230,6 @@ const WebDisc = ({ img, tone, index }) => {
         />
         <div className="absolute inset-0" style={{ background: 'radial-gradient(circle at 30% 20%, rgba(255,211,181,0.25), transparent 60%)' }} />
       </div>
-      {/* web ring overlay */}
       <svg width={size} height={size} viewBox={`${-size/2} ${-size/2} ${size} ${size}`} className="absolute inset-0 web-spin-slow pointer-events-none" aria-hidden>
         {Array.from({ length: spokes }).map((_, s) => {
           const a = (s / spokes) * Math.PI * 2;
@@ -258,7 +245,6 @@ const WebDisc = ({ img, tone, index }) => {
           return <path key={`r${r}`} d={pts.join(' ')} stroke="rgba(251,247,242,0.35)" strokeWidth="0.6" fill="none" />;
         })}
       </svg>
-      {/* year badge */}
       <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-full bg-[var(--ink)] text-[var(--cream)] text-[9px] tracking-[0.28em] uppercase font-medium">
         #{String(index + 1).padStart(2, '0')}
       </div>

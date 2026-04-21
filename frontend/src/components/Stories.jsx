@@ -1,59 +1,58 @@
 import React, { useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { ArrowUpRight } from 'lucide-react';
 import { SpiderWeb } from './SpiderWeb';
 import { useStagger } from '../lib/interactions';
 
 export const stories = [
   {
-    slug: 'mycelium-and-math',
-    tag: 'Research',
+    slug: 'the-market-as-textbook',
+    tag: 'Economics',
     date: 'Feb 2026',
-    title: 'Mycelium and math: how the 4th grade mapped the forest floor',
-    excerpt: 'For twelve weeks, students traced fungal networks under the cedar grove — and discovered their teacher\'s graph-theory unit hiding in the soil.',
-    img: 'https://images.unsplash.com/photo-1507048331197-7d4ac70811cf?w=900&q=80',
-    author: 'Ms. Ayodele',
+    title: 'The market as textbook: a Grade 8 project on seasonal prices',
+    excerpt: 'For six weeks, our Grade 8 students tracked the weekly price of six staples across five local markets in five countries — and taught themselves linear regression along the way.',
+    img: 'https://images.unsplash.com/photo-1488459716781-31db52582fe9?w=900&q=80',
+    author: 'Ms. Reema',
     read: '6 min',
   },
   {
-    slug: 'kyoto-letters',
-    tag: 'Global Year',
+    slug: 'letters-from-nairobi',
+    tag: 'Global',
     date: 'Jan 2026',
-    title: 'Letters from Kyoto: an 11th-grader\'s term abroad',
-    excerpt: 'Rhea Shah writes home from her partner school, where she is learning kintsugi and reading Ghalib in Urdu after dinner.',
-    img: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=900&q=80',
-    author: 'Rhea Shah (\'27)',
+    title: 'Letters from Nairobi: an IGCSE student on her first field trip',
+    excerpt: 'Amina (Grade 9, Kenya) writes about a visit to a coffee cooperative, and how economics and environmental management suddenly felt like one subject, not two.',
+    img: 'https://images.unsplash.com/photo-1528181304800-259b08848526?w=900&q=80',
+    author: 'Amina K. (\'28)',
     read: '4 min',
   },
   {
-    slug: 'the-weaver-library',
-    tag: 'Place',
+    slug: 'the-factory-is-a-lab',
+    tag: 'Science',
     date: 'Dec 2025',
-    title: 'Inside the Weaver Library: a reading room by Priya Khan (\'98)',
-    excerpt: 'Our alumna architect returned to design the school\'s cedar-vaulted library. A walk through, with a list of what\'s on the shelves this season.',
-    img: 'https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=900&q=80',
-    author: 'Head of School',
-    read: '7 min',
+    title: 'The factory is a lab: a bakery in Cairo teaches chemistry',
+    excerpt: 'One week, one bakery, one Grade 7 cohort. What happens when dough becomes data, and a baker becomes faculty.',
+    img: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=900&q=80',
+    author: 'Mr. Hisham',
+    read: '5 min',
   },
   {
-    slug: 'chamber-music-strand',
-    tag: 'Arts',
-    date: 'Nov 2025',
-    title: 'A chamber music piece named "Strand"',
-    excerpt: 'Composer Lio Tanaka (\'92) returns for a week of masterclasses, and the conservatory quartet debuts his new work in the Pavilion.',
-    img: 'https://images.unsplash.com/photo-1465847899084-d164df4dedc6?w=900&q=80',
-    author: 'Conservatory Desk',
-    read: '3 min',
-  },
-  {
-    slug: 'a-gentle-curriculum',
+    slug: 'why-boutique',
     tag: 'Pedagogy',
-    date: 'Oct 2025',
-    title: 'A gentle curriculum — why we begin the day with a book',
-    excerpt: 'Twenty minutes of silent reading, every morning, every grade. What fifty years of slow mornings have taught us about rigor.',
+    date: 'Nov 2025',
+    title: 'Why we stay boutique — a letter from the founder',
+    excerpt: 'We cap our cohorts at 120 students across all grades. Here is why, and what we believe gets lost when a school grows too fast.',
     img: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=900&q=80',
-    author: 'Ada Moreau, Founder',
+    author: 'Naqiyah Burhanuddin',
     read: '8 min',
+  },
+  {
+    slug: 'joining-the-web',
+    tag: 'Admissions',
+    date: 'Oct 2025',
+    title: 'Joining The Web: what the first month feels like',
+    excerpt: 'Five new families tell us, in their own words, what changed in their household in the first month of online school at The Web.',
+    img: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=900&q=80',
+    author: 'Admissions Desk',
+    read: '3 min',
   },
 ];
 
@@ -71,7 +70,6 @@ function useReveal() {
 
 export default function Stories() {
   const r = useReveal();
-  const navigate = useNavigate();
   const gridStagger = useStagger({ step: 160 });
   const [featured, ...rest] = stories;
 
@@ -82,13 +80,12 @@ export default function Stories() {
         <div ref={r} className="reveal flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-14">
           <div>
             <div className="text-[11px] tracking-[0.3em] uppercase text-[var(--lavender-deep)] mb-4">Stories · 06</div>
-            <h2 className="font-display text-5xl lg:text-6xl tracking-tight leading-[1]">From the <em className="italic">weavers' desk</em>.</h2>
+            <h2 className="font-display text-5xl lg:text-6xl tracking-tight leading-[1]">From <em className="italic">inside the web</em>.</h2>
           </div>
-          <p className="max-w-md text-[var(--ink-soft)]">A monthly dispatch of student work, pedagogy notes, and the occasional recipe from the library cafe.</p>
+          <p className="max-w-md text-[var(--ink-soft)]">A monthly dispatch of student work, field notes, and letters from seven countries — our classrooms as they actually are.</p>
         </div>
 
         <div ref={gridStagger} className="grid lg:grid-cols-12 gap-6">
-          {/* Featured */}
           <article data-testid={`story-${featured.slug}`} data-stagger-item className="stagger-item lg:col-span-7 tilt rounded-3xl overflow-hidden border border-[rgba(43,33,64,0.08)] bg-white" data-web-anchor>
             <div className="relative aspect-[16/10] overflow-hidden">
               <div className="clip-reveal stagger-item absolute inset-0" data-stagger-item>
@@ -107,7 +104,6 @@ export default function Stories() {
             </div>
           </article>
 
-          {/* side grid */}
           <div className="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-6">
             {rest.map(s => (
               <article key={s.slug} data-testid={`story-${s.slug}`} data-stagger-item className="stagger-item flex gap-4 p-5 rounded-2xl bg-white border border-[rgba(43,33,64,0.08)] tilt" data-web-anchor>

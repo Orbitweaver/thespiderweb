@@ -114,8 +114,8 @@ export default function MobileDrawer({ open, onClose }) {
             transition: 'opacity .5s ease .45s, transform .7s cubic-bezier(.2,.7,.2,1) .45s',
           }}
         >
-          <div className="font-display text-[18px] leading-none">Silkstrand</div>
-          <div className="text-[9px] uppercase tracking-[0.26em] text-[var(--lavender)] mt-1">Academy</div>
+          <div className="font-display text-[18px] leading-none">The Web</div>
+          <div className="text-[9px] uppercase tracking-[0.26em] text-[var(--lavender)] mt-1">Online School</div>
         </div>
 
         {/* Animated thread path drawing through the list */}
@@ -185,7 +185,7 @@ export default function MobileDrawer({ open, onClose }) {
             Begin Admission →
           </button>
           <div className="text-[12px] text-[var(--cream)]/60 leading-relaxed">
-            214 Weaver Lane · Silkstrand, CA<br />admissions@silkstrand.edu
+            Boutique online school · Grades 6–10<br />+91 95378 88852
           </div>
         </div>
       </div>

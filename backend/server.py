@@ -190,7 +190,7 @@ async def subscribe(payload: NewsletterCreate):
                 {
                     "from": SENDER_EMAIL,
                     "to": [payload.email],
-                    "subject": "You're on the thread — Silkstrand Academy",
+                    "subject": "You're on the thread — The Web",
                     "html": WELCOME_HTML,
                 },
             )

@@ -89,24 +89,23 @@ export const Hero = () => {
       <div className="max-w-7xl mx-auto px-6 lg:px-10 grid lg:grid-cols-12 gap-10 items-end relative z-10">
         <div className="lg:col-span-8">
           <div className="inline-flex items-center gap-2 rounded-full bg-[var(--mint)] text-[var(--ink)] px-3 py-1 text-[11px] tracking-[0.24em] uppercase mb-8 badge-float" data-web-anchor>
-            <Sparkles className="w-3.5 h-3.5" /> Admissions 2026 — now open
+            <Sparkles className="w-3.5 h-3.5" /> Admissions Open — Academic year begins 01 June
           </div>
           <h1 className="font-display text-[56px] sm:text-[72px] lg:text-[104px] leading-[0.92] tracking-[-0.03em]">
             <SplitWords text="Weaving" />
             <em className="italic"><SplitWords text=" curious" delay={360} gradient /></em>
             <br/>
-            <SplitWords text="minds, one" delay={720} />
+            <SplitWords text="minds, beyond" delay={720} />
             <span className="relative inline-block">
-              <SplitWords text=" thread" delay={1000} />
+              <SplitWords text=" the" delay={1000} />
               <svg className="absolute -bottom-4 left-0 w-full" viewBox="0 0 220 16" fill="none">
                 <path d="M2 10 C 60 2, 160 18, 218 6" stroke="var(--peach-deep)" strokeWidth="3" strokeLinecap="round" className="underline-draw"/>
               </svg>
             </span><br/>
-            <SplitWords text="at a time." delay={1400} />
+            <SplitWords text="classroom." delay={1400} />
           </h1>
           <p className="mt-10 max-w-xl text-[17px] leading-[1.65] text-[var(--ink-soft)] fade-up-delay">
-            Silkstrand Academy is a K–12 learning community where intellectual play, the arts,
-            and science are woven together — gently, deliberately, beautifully.
+            The Web is a <em className="font-display italic">boutique online school</em> where learning comes alive beyond the classroom — Cambridge IGCSE for Grades 6–10, with students in seven countries.
           </p>
           <div className="mt-10 flex flex-wrap gap-4 fade-up-delay" style={{ animationDelay: '1.9s' }}>
             <div ref={applyRef}>
@@ -118,9 +117,9 @@ export const Hero = () => {
           </div>
         </div>
         <div className="lg:col-span-4 space-y-5">
-          <Stat n={50} l="Years of craft" />
-          <Stat n={94} suffix="%" l="University placement" />
-          <Stat n={18} suffix=":1" l="Student-teacher ratio" />
+          <Stat n={7} l="Countries represented" />
+          <Stat n={10} suffix="" l="Grades · IGCSE 6–10" format={(v) => `6–${Math.round(v)}`} />
+          <Stat n={8} suffix=":1" l="Student-teacher ratio" format={(v) => `1:${Math.round(v)}`} />
         </div>
       </div>
 
@@ -139,7 +138,7 @@ export const Hero = () => {
   );
 };
 
-/* ABOUT */
+/* ABOUT — 5 visionary "What if" questions */
 export const About = () => {
   const r = useReveal();
   return (
@@ -149,14 +148,15 @@ export const About = () => {
       <div className="max-w-7xl mx-auto px-6 lg:px-10 grid lg:grid-cols-12 gap-12 relative z-10">
         <div ref={r} className="reveal lg:col-span-5">
           <div className="text-[11px] tracking-[0.3em] uppercase text-[var(--lavender-deep)] mb-4">About · 01</div>
-          <h2 className="font-display text-5xl lg:text-6xl leading-[1] tracking-tight">A school spun from intention.</h2>
+          <h2 className="font-display text-5xl lg:text-6xl leading-[1] tracking-tight">A school built on <em className="italic">five what-ifs</em>.</h2>
+          <p className="mt-8 text-[16px] text-[var(--ink-soft)] leading-relaxed max-w-md">The Web is an online IGCSE school — boutique by design, global by students. We began with a handful of questions and are still chasing them.</p>
         </div>
         <div className="lg:col-span-7 grid sm:grid-cols-2 gap-8">
           {[
-            { icon: Leaf, t: 'Rooted in place', d: 'A 22-acre campus where gardens, wetlands, and studios are part of the curriculum.' },
-            { icon: Compass, t: 'Guided inquiry', d: 'Socratic seminars, open studios, and project weeks across every division.' },
-            { icon: BookOpen, t: 'Global, literary', d: 'Reading lists built by our librarians — from Ghalib to Le Guin to Baldwin.' },
-            { icon: Sparkles, t: 'Joyful rigor', d: 'High standards without the hurry. Space to think, make, and revise.' },
+            { icon: Leaf, t: 'What if hard work was the curriculum?', d: 'Real projects, real outputs, real audiences — across every subject.' },
+            { icon: Compass, t: 'What if villages were classrooms?', d: 'Communities as educators, elders and makers as faculty.' },
+            { icon: BookOpen, t: 'What if curiosity replaced scores?', d: 'IGCSE-ready rigour, measured by the questions students learn to ask.' },
+            { icon: Sparkles, t: 'What if markets taught mathematics?', d: 'Local markets, kitchens, factories — our living textbooks.' },
           ].map((f, i) => (
             <TiltCard key={i} f={f} />
           ))}
@@ -177,14 +177,14 @@ const TiltCard = ({ f }) => {
   );
 };
 
-/* ACADEMICS */
+/* ACADEMICS — 6 IGCSE subjects */
 const programs = [
-  { icon: Leaf, slug: 'lower-school', name: 'Lower School', grades: 'K–5', color: 'var(--mint)', desc: 'Phonics, nature journaling, mixed-age studios, and slow mornings outside.' },
-  { icon: Beaker, slug: 'middle-school', name: 'Middle School', grades: '6–8', color: 'var(--peach)', desc: 'Deep project blocks — cartography, civics, chemistry, and chamber music.' },
-  { icon: BookOpen, slug: 'upper-school', name: 'Upper School', grades: '9–12', color: 'var(--lavender)', desc: 'Honors seminars, AP options, and a two-year capstone thesis.' },
-  { icon: Music, slug: 'arts-conservatory', name: 'Arts Conservatory', grades: 'Elective', color: '#F7D9E4', desc: 'Strings, ceramics, printmaking, film — nine ateliers led by practicing artists.' },
-  { icon: Trophy, slug: 'athletics', name: 'Athletics', grades: 'All', color: '#D9EAF7', desc: 'No-cut teams, 14 sports, and a renowned cross-country program.' },
-  { icon: Compass, slug: 'global-year', name: 'Global Year', grades: 'Gr. 11', color: '#FFE7A8', desc: 'A term abroad embedded in partner schools — Kyoto, Oaxaca, Edinburgh.' },
+  { icon: BookOpen, slug: 'english', name: 'English', grades: 'IGCSE 6–10', color: 'var(--mint)', desc: 'A weekly writing studio, Socratic seminars, and Cambridge IGCSE First Language — built around the student voice.' },
+  { icon: Compass, slug: 'maths', name: 'Maths', grades: 'IGCSE 6–10', color: 'var(--lavender)', desc: 'Algebra from family budgets, geometry from maps, statistics from the news — mathematics made visible.' },
+  { icon: Beaker, slug: 'science', name: 'Science', grades: 'IGCSE 6–10', color: 'var(--peach)', desc: 'Coordinated biology, chemistry, physics — with home-lab kits and field investigations across seven countries.' },
+  { icon: Trophy, slug: 'economics', name: 'Economics', grades: 'IGCSE 6–10', color: '#F7D9E4', desc: 'Household budgets become micro-economies; local markets become live case studies.' },
+  { icon: Leaf, slug: 'environmental-management', name: 'Environmental Management', grades: 'IGCSE 6–10', color: '#D9EAF7', desc: 'Place-based fieldwork, global data, and a term-long action project in every student\'s own neighbourhood.' },
+  { icon: Music, slug: 'travel-and-tourism', name: 'Travel & Tourism', grades: 'IGCSE 6–10', color: '#FFE7A8', desc: 'Geography meets storytelling — virtual field trips, traveller interviews, and ethics of hospitality.' },
 ];
 
 const ProgramCard = ({ p, i }) => {
@@ -232,15 +232,15 @@ export const Academics = () => {
 
 /* ADMISSIONS — client-only */
 export const Admissions = () => {
-  const [form, setForm] = useState({ student_name: '', parent_name: '', email: '', phone: '', grade: '', program: 'Lower School', notes: '' });
+  const [form, setForm] = useState({ student_name: '', parent_name: '', email: '', phone: '', grade: '', program: 'English', notes: '' });
   const [loading, setLoading] = useState(false);
   const update = (k, v) => setForm(f => ({ ...f, [k]: v }));
   const submit = async (e) => {
     e.preventDefault();
     setLoading(true);
     await new Promise(r => setTimeout(r, 700));
-    toast.success('Inquiry received — our admissions team will reach out within 48 hours.');
-    setForm({ student_name: '', parent_name: '', email: '', phone: '', grade: '', program: 'Lower School', notes: '' });
+    toast.success('Inquiry received — we\'ll reach out within two school days.');
+    setForm({ student_name: '', parent_name: '', email: '', phone: '', grade: '', program: 'English', notes: '' });
     setLoading(false);
   };
   return (
@@ -250,12 +250,19 @@ export const Admissions = () => {
         <div className="lg:col-span-5">
           <div className="text-[11px] tracking-[0.3em] uppercase text-[var(--lavender)] mb-4">Admissions · 03</div>
           <h2 className="font-display text-5xl lg:text-6xl leading-[1] tracking-tight">Begin your <em className="italic text-[var(--peach)]">thread</em>.</h2>
-          <p className="mt-8 text-[var(--cream)]/80 max-w-md leading-relaxed">Send us a line. We'll respond within two school days with campus tour dates and a portfolio of our programs.</p>
+          <p className="mt-8 text-[var(--cream)]/80 max-w-md leading-relaxed">Admissions open for the academic year beginning <span className="text-[var(--peach)]">01 June</span>. Our cohorts fill fast — send us a line, and we'll respond within two school days.</p>
           <ul className="mt-10 space-y-4 text-[15px]">
-            {['Rolling admissions · Sept & Jan intake', 'Merit & need-based financial aid', 'Sibling & alumni priority'].map(x => (
+            {[
+              'Cambridge IGCSE · Grades 6 through 10',
+              'Small cohorts · 1:8 student-teacher ratio',
+              'Students welcome from anywhere — seven countries and counting',
+            ].map(x => (
               <li key={x} className="flex items-start gap-3"><span className="mt-1.5 inline-block w-2 h-2 rounded-full bg-[var(--mint)] dew" />{x}</li>
             ))}
           </ul>
+          <a href="tel:+919537888852" className="mt-8 inline-flex items-center gap-2 text-[13px] tracking-[0.2em] uppercase text-[var(--peach)] link-u">
+            Curious? Let's talk · +91 95378 88852
+          </a>
         </div>
         <form onSubmit={submit} className="lg:col-span-7 bg-[var(--cream)] text-[var(--ink)] rounded-3xl p-8 lg:p-10 space-y-5" data-testid="admissions-form">
           <div className="grid sm:grid-cols-2 gap-5">
@@ -263,13 +270,13 @@ export const Admissions = () => {
             <div><Label>Parent / Guardian</Label><Input data-testid="adm-parent" required value={form.parent_name} onChange={e => update('parent_name', e.target.value)} className="mt-2 h-11 input-glow" /></div>
             <div><Label>Email</Label><Input data-testid="adm-email" type="email" required value={form.email} onChange={e => update('email', e.target.value)} className="mt-2 h-11 input-glow" /></div>
             <div><Label>Phone</Label><Input data-testid="adm-phone" required value={form.phone} onChange={e => update('phone', e.target.value)} className="mt-2 h-11 input-glow" /></div>
-            <div><Label>Seeking Grade</Label><Input data-testid="adm-grade" required placeholder="e.g., Grade 4" value={form.grade} onChange={e => update('grade', e.target.value)} className="mt-2 h-11 input-glow" /></div>
+            <div><Label>Seeking Grade</Label><Input data-testid="adm-grade" required placeholder="e.g., Grade 7" value={form.grade} onChange={e => update('grade', e.target.value)} className="mt-2 h-11 input-glow" /></div>
             <div>
-              <Label>Interested Program</Label>
+              <Label>Interested Subject</Label>
               <Select value={form.program} onValueChange={v => update('program', v)}>
                 <SelectTrigger data-testid="adm-program" className="mt-2 h-11"><SelectValue /></SelectTrigger>
                 <SelectContent>
-                  {['Lower School','Middle School','Upper School','Arts Conservatory','Athletics','Global Year'].map(p => (
+                  {['English','Maths','Science','Economics','Environmental Management','Travel & Tourism','Full IGCSE (all six)'].map(p => (
                     <SelectItem key={p} value={p}>{p}</SelectItem>
                   ))}
                 </SelectContent>
@@ -284,18 +291,18 @@ export const Admissions = () => {
   );
 };
 
-/* EVENTS — static */
+/* EVENTS — static online sessions */
 const STATIC_EVENTS = [
-  { id: 'e1', title: 'Spring Science Fair', description: 'Young minds showcase inventions, coding demos, and robotics projects across grades 5–12.', date: '2026-03-14', location: 'Main Auditorium', category: 'academic' },
-  { id: 'e2', title: 'Inter-House Athletics Meet', description: 'A full-day athletics championship with track, field, and relay events.', date: '2026-04-02', location: 'Silk Field', category: 'sports' },
-  { id: 'e3', title: 'Silkstrand Arts Night', description: 'Student paintings, pottery, and a live orchestra performance under the stars.', date: '2026-04-19', location: 'Webgarden Pavilion', category: 'arts' },
-  { id: 'e4', title: 'Community Reading Day', description: 'Parents and alumni read with primary students across classrooms.', date: '2026-05-08', location: 'Weaver Library', category: 'community' },
-  { id: 'e5', title: 'Model United Nations', description: 'Two-day delegate conference hosting 20 schools across the region.', date: '2026-05-23', location: 'Strand Hall', category: 'academic' },
+  { id: 'e1', title: 'IGCSE Open House (Online)', description: 'Meet the faculty, sit in on a live English seminar, and ask anything — families from all timezones welcome.', date: '2026-05-18', location: 'Online · Zoom', category: 'admissions' },
+  { id: 'e2', title: 'Market Maths Showcase', description: 'Grade 8 presents six weeks of local-market pricing research — live from Mumbai, Cairo, Nairobi, Colombo.', date: '2026-05-27', location: 'Online · public session', category: 'academic' },
+  { id: 'e3', title: 'Environmental Audit Day', description: 'Every student, one neighbourhood, one day. Students share short films of their local environmental audits.', date: '2026-06-06', location: 'Online · global classroom', category: 'community' },
+  { id: 'e4', title: 'First Day of School', description: 'The academic year begins. New cohorts meet for the first time — tea, books, and introductions across seven countries.', date: '2026-06-01', location: 'Online · welcome assembly', category: 'community' },
+  { id: 'e5', title: 'Grandparents\' Seminar Series', description: 'Elders from our students\' families teach a craft, a language, a recipe, a trade — weekly through the term.', date: '2026-06-12', location: 'Online · rotating languages', category: 'arts' },
 ];
 
 const EventCard = ({ ev }) => {
   const tRef = useTilt(5);
-  const catColor = { academic: 'var(--lavender)', sports: 'var(--mint)', arts: 'var(--peach)', community: '#F7D9E4' };
+  const catColor = { academic: 'var(--lavender)', admissions: 'var(--mint)', arts: 'var(--peach)', community: '#F7D9E4' };
   return (
     <article ref={tRef} data-testid={`event-${ev.id}`} data-web-anchor className="group relative flex gap-6 p-7 rounded-3xl border border-[rgba(43,33,64,0.08)] bg-white overflow-hidden" style={{ transformStyle: 'preserve-3d' }}>
       <div className="shrink-0 w-20 h-20 rounded-2xl flex flex-col items-center justify-center date-chip" style={{ background: catColor[ev.category] || 'var(--lavender)' }}>
@@ -354,9 +361,9 @@ export const Contact = () => {
           <div className="text-[11px] tracking-[0.3em] uppercase text-[var(--lavender-deep)] mb-4">Contact · 05</div>
           <h2 className="font-display text-5xl lg:text-6xl tracking-tight leading-[1]">Say hello.</h2>
           <div className="mt-10 space-y-4 text-[15px] leading-relaxed text-[var(--ink-soft)]">
-            <p><span className="text-[var(--ink)] font-medium">Main Campus</span><br/>214 Weaver Lane, Silkstrand, CA 94103</p>
-            <p><span className="text-[var(--ink)] font-medium">Admissions</span><br/>admissions@silkstrand.edu · (415) 555 0128</p>
-            <p><span className="text-[var(--ink)] font-medium">Visiting hours</span><br/>Tuesdays & Thursdays, 9:00 – 15:00</p>
+            <p><span className="text-[var(--ink)] font-medium">Campus</span><br/>Online · Students across seven countries</p>
+            <p><span className="text-[var(--ink)] font-medium">Admissions</span><br/>+91 95378 88852</p>
+            <p><span className="text-[var(--ink)] font-medium">Academic year</span><br/>Begins 01 June · enrolling now for Grades 6–10</p>
           </div>
         </div>
         <form onSubmit={submit} className="lg:col-span-7 bg-white rounded-3xl p-8 lg:p-10 border border-[rgba(43,33,64,0.08)] space-y-5" data-testid="contact-form">
@@ -389,13 +396,15 @@ export const Footer = () => (
       </div>
       <div className="grid md:grid-cols-4 gap-10">
         <div>
-          <div className="flex items-center gap-3 mb-4"><Spider size={30} wobble /><span className="font-display text-2xl">Silkstrand</span></div>
-          <p className="text-[13px] text-[var(--cream)]/70 leading-relaxed max-w-xs">A K–12 independent school weaving curiosity, craft, and character since 1974.</p>
+          <div className="flex items-center gap-3 mb-4"><Spider size={30} wobble /><span className="font-display text-2xl">The Web</span></div>
+          <p className="text-[13px] text-[var(--cream)]/70 leading-relaxed max-w-xs">A boutique online school offering Cambridge IGCSE for Grades 6–10 — where learning comes alive beyond the classroom.</p>
+          <p className="text-[11px] tracking-[0.22em] uppercase text-[var(--lavender)] mt-6">Students from</p>
+          <p className="text-[12px] text-[var(--cream)]/70 mt-1 leading-relaxed">India · UK · Egypt · Yemen · East Africa · Sri Lanka · UAE</p>
         </div>
         {[
-          { t: 'Explore', l: ['About','Academics','Arts','Athletics'] },
-          { t: 'Admissions', l: ['Inquire','Visit','Tuition','Financial Aid'] },
-          { t: 'Community', l: ['Events','Stories','Alumni','Careers'] },
+          { t: 'Explore', l: ['About','Academics','Events','Stories'] },
+          { t: 'Admissions', l: ['Inquire','Begins 01 June','+91 95378 88852','IGCSE Grades 6–10'] },
+          { t: 'Community', l: ['Global students','Online campus','Open House','Newsletter'] },
         ].map(c => (
           <div key={c.t}>
             <div className="text-[11px] uppercase tracking-[0.28em] text-[var(--lavender)] mb-4">{c.t}</div>
@@ -403,9 +412,9 @@ export const Footer = () => (
           </div>
         ))}
       </div>
-      <div className="mt-16 pt-6 border-t border-white/10 flex flex-col md:flex-row justify-between text-[12px] text-[var(--cream)]/60">
-        <div>© {new Date().getFullYear()} Silkstrand Academy. Every thread matters.</div>
-        <div>Woven in California · Accredited by WASC</div>
+      <div className="mt-16 pt-6 border-t border-white/10 flex flex-col md:flex-row justify-between text-[12px] text-[var(--cream)]/60 gap-2">
+        <div>© {new Date().getFullYear()} The Web · A boutique online school.</div>
+        <div className="italic font-display">woven by Naqiyah Burhanuddin</div>
       </div>
     </div>
   </footer>
