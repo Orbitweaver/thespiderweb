@@ -218,7 +218,7 @@ export const Academics = () => {
         <div ref={r} className="reveal flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-14">
           <div>
             <div className="text-[11px] tracking-[0.3em] uppercase text-[var(--lavender-deep)] mb-4">Academics · 02</div>
-            <h2 className="font-display text-5xl lg:text-6xl tracking-tight leading-[1]">Six programs. <em className="italic">One web.</em></h2>
+            <h2 className="font-display text-5xl lg:text-6xl tracking-tight leading-[1]">Six subjects. <em className="italic">One web.</em></h2>
           </div>
           <p className="max-w-md text-[var(--ink-soft)]">Our divisions are connected by faculty, studios, and rituals — so curiosity threads from first grade to twelfth.</p>
         </div>
