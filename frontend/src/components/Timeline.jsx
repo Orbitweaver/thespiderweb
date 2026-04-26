@@ -109,7 +109,7 @@ export default function Timeline() {
   const visibleLen = Math.min(progress, 1) * pathLen;
 
   return (
-    <section id="timeline" ref={sectionRef} className="relative py-28 overflow-hidden" data-testid="timeline-section">
+    <section id="timeline" ref={sectionRef} className="relative py-28 padbotmmobls overflow-hidden" data-testid="timeline-section">
       <div className="absolute left-0 top-40 opacity-50 pointer-events-none" style={{ transform: 'translateX(-40%)' }}>
         <AsymmetricWeb size={320} stroke="rgba(140,111,198,0.4)" />
       </div>
@@ -123,7 +123,7 @@ export default function Timeline() {
         <p className="mt-6 max-w-xl text-[var(--ink-soft)] text-[16px] leading-relaxed">The Web began as a series of questions — and we haven't stopped asking them. Scroll to follow the spider along the strand.</p>
       </div>
 
-      <div className="relative max-w-5xl mx-auto px-6 lg:px-10">
+      <div className="relative max-w-5xl mx-auto px-6 lg:px-10 pt-20 mobpadtop">
         <svg viewBox={`0 0 ${VIEW_W} ${VIEW_H}`} className="absolute inset-0 w-full h-full pointer-events-none" preserveAspectRatio="xMidYMid meet" aria-hidden>
           <path d={pathD} stroke="rgba(43,33,64,0.12)" strokeWidth="2" fill="none" strokeDasharray="4 6" />
           <path
@@ -183,7 +183,7 @@ export default function Timeline() {
                 ref={el => nodeRefs.current[i] = el}
                 data-idx={i}
                 data-testid={`milestone-${i}`}
-                className={`absolute w-[46%] ${side === 'left' ? 'left-0' : 'right-0'}`}
+                className={`absolute w-[46%] wid100permob ${side === 'left' ? 'left-0' : 'right-0'}`}
                 style={{
                   top: `${yPct}%`,
                   transform: isIn ? 'translateY(-50%)' : 'translateY(calc(-50% + 22px))',
@@ -191,12 +191,12 @@ export default function Timeline() {
                   transition: 'opacity .8s ease, transform 1s cubic-bezier(.2,.7,.2,1)',
                 }}
               >
-                <div className={`flex gap-6 ${side === 'left' ? 'flex-row-reverse text-right' : 'flex-row text-left'}`} data-web-anchor>
+                <div className={`flex gap-6 disbmob ${side === 'left' ? 'flex-row-reverse text-right' : 'flex-row text-left'}`} data-web-anchor>
                   <WebDisc img={m.img} tone={m.tone} index={i} />
                   <div className="flex-1 min-w-0">
                     <div className={`flex items-center gap-2 mb-2 ${side === 'left' ? 'flex-row-reverse' : ''}`}>
                       <span className="w-1.5 h-1.5 rounded-full bg-[var(--lavender-deep)]" />
-                      <span className="text-[10px] uppercase tracking-[0.3em] text-[var(--lavender-deep)]">{m.tag}</span>
+                      <span className="text-[10px] mmpb-pad uppercase tracking-[0.3em] text-[var(--lavender-deep)]">{m.tag}</span>
                     </div>
                     <div className="font-display text-5xl lg:text-6xl leading-none text-[var(--ink)]">{m.year}</div>
                     <h3 className="font-display italic text-xl lg:text-2xl mt-3 leading-snug">{m.prompt}</h3>

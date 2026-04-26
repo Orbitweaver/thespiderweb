@@ -8,7 +8,7 @@ import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
 import { Label } from './ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
-import { ArrowUpRight, Calendar, MapPin, BookOpen, Sparkles, Compass, Leaf, Music, Beaker, Trophy } from 'lucide-react';
+import { ArrowUpRight, Calendar, Clock , BookOpen, Sparkles, Compass, Leaf, Music, Beaker, Trophy } from 'lucide-react';
 import { useMagnetic, useTilt, useCountUp, useRipple } from '../lib/interactions';
 
 function useReveal() {
@@ -95,16 +95,17 @@ export const Hero = () => {
             <SplitWords text="Weaving" />
             <em className="italic"><SplitWords text=" curious" delay={360} gradient /></em>
             <br/>
-            <SplitWords text="minds, beyond" delay={720} />
+            <SplitWords text="minds, One" delay={720} />
             <span className="relative inline-block">
-              <SplitWords text=" the" delay={1000} />
+              <SplitWords text=" Thread" delay={1000} />
               <svg className="absolute -bottom-4 left-0 w-full" viewBox="0 0 220 16" fill="none">
                 <path d="M2 10 C 60 2, 160 18, 218 6" stroke="var(--peach-deep)" strokeWidth="3" strokeLinecap="round" className="underline-draw"/>
               </svg>
             </span><br/>
-            <SplitWords text="classroom." delay={1400} />
+            <SplitWords text="at a time." delay={1400} />
           </h1>
-          <p className="mt-10 max-w-xl text-[17px] leading-[1.65] text-[var(--ink-soft)] fade-up-delay">
+          <p className='mt-4'><u>Woven By <b><em className="italic"><SplitWords text=" Naqiyah Burhanuddin" delay={360} gradient /></em></b></u></p>
+          <p className="mt-6 max-w-xl text-[17px] leading-[1.65] text-[var(--ink-soft)] fade-up-delay">
             The Web is a <em className="font-display italic">boutique online school</em> where learning comes alive beyond the classroom — Cambridge IGCSE for Grades 6–10, with students in seven countries.
           </p>
           <div className="mt-10 flex flex-wrap gap-4 fade-up-delay" style={{ animationDelay: '1.9s' }}>
@@ -119,7 +120,7 @@ export const Hero = () => {
         <div className="lg:col-span-4 space-y-5">
           <Stat n={7} l="Countries represented" />
           <Stat n={10} suffix="" l="Grades · IGCSE 6–10" format={(v) => `6–${Math.round(v)}`} />
-          <Stat n={8} suffix=":1" l="Student-teacher ratio" format={(v) => `1:${Math.round(v)}`} />
+          <Stat n={10} suffix="" l="Student-teacher ratio" format={(v) => `1:${Math.round(v)}`} />
         </div>
       </div>
 
@@ -156,7 +157,9 @@ export const About = () => {
             { icon: Leaf, t: 'What if hard work was the curriculum?', d: 'Real projects, real outputs, real audiences — across every subject.' },
             { icon: Compass, t: 'What if villages were classrooms?', d: 'Communities as educators, elders and makers as faculty.' },
             { icon: BookOpen, t: 'What if curiosity replaced scores?', d: 'IGCSE-ready rigour, measured by the questions students learn to ask.' },
+            
             { icon: Sparkles, t: 'What if markets taught mathematics?', d: 'Local markets, kitchens, factories — our living textbooks.' },
+             { icon: BookOpen, t: 'What if factories became laboratories of real-world science?', d: 'Factories become living labs where science moves from theory to real-world innovation.' },
           ].map((f, i) => (
             <TiltCard key={i} f={f} />
           ))}
@@ -212,7 +215,7 @@ const ProgramCard = ({ p, i }) => {
 export const Academics = () => {
   const r = useReveal();
   return (
-    <section id="academics" className="relative py-28" data-testid="academics-section">
+    <section id="academics" className="relative py-28 padtopmobse" data-testid="academics-section">
       <div className="absolute right-0 top-10 opacity-40 pointer-events-none"><SpiderWeb size={340} stroke="rgba(240,143,95,0.35)" /></div>
       <div className="max-w-7xl mx-auto px-6 lg:px-10">
         <div ref={r} className="reveal flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-14">
@@ -235,14 +238,40 @@ export const Admissions = () => {
   const [form, setForm] = useState({ student_name: '', parent_name: '', email: '', phone: '', grade: '', program: 'English', notes: '' });
   const [loading, setLoading] = useState(false);
   const update = (k, v) => setForm(f => ({ ...f, [k]: v }));
-  const submit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    await new Promise(r => setTimeout(r, 700));
-    toast.success('Inquiry received — we\'ll reach out within two school days.');
-    setForm({ student_name: '', parent_name: '', email: '', phone: '', grade: '', program: 'English', notes: '' });
-    setLoading(false);
-  };
+
+const submit = async (e) => {
+  e.preventDefault();
+
+  const message = `
+*New Admission Inquiry — The Web School*
+
+Student Details:
+• Name: ${form.student_name}
+• Grade Applying For: ${form.grade}
+
+Parent / Guardian:
+• Name: ${form.parent_name}
+• Phone: ${form.phone}
+• Email: ${form.email}
+
+Academic Interest:
+• Program: ${form.program}
+
+Additional Notes:
+${form.notes || "Not provided"}
+
+—
+Submitted via website 
+`;
+
+  const phoneNumber = "919537888852";
+
+  const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+
+  window.open(whatsappURL, "_blank");
+};
+
+
   return (
     <section id="admissions" className="relative py-28 bg-[var(--ink)] text-[var(--cream)] overflow-hidden" data-testid="admissions-section">
       <div className="absolute -left-32 bottom-0 opacity-30 pointer-events-none"><SpiderWeb size={520} stroke="rgba(201,182,228,0.35)" spin /></div>
@@ -254,14 +283,14 @@ export const Admissions = () => {
           <ul className="mt-10 space-y-4 text-[15px]">
             {[
               'Cambridge IGCSE · Grades 6 through 10',
-              'Small cohorts · 1:8 student-teacher ratio',
+              'Small cohorts · 1:10 student-teacher ratio',
               'Students welcome from anywhere — seven countries and counting',
             ].map(x => (
               <li key={x} className="flex items-start gap-3"><span className="mt-1.5 inline-block w-2 h-2 rounded-full bg-[var(--mint)] dew" />{x}</li>
             ))}
           </ul>
-          <a href="tel:+919537888852" className="mt-8 inline-flex items-center gap-2 text-[13px] tracking-[0.2em] uppercase text-[var(--peach)] link-u">
-            Curious? Let's talk · +91 95378 88852
+          <a href="tel:+919537888852" className="mt-8  items-center gap-2 text-[13px] tracking-[0.2em] uppercase text-[var(--peach)] link-u"><br></br>
+            Curious? Let's talk<br></br><p className='pt-2 block'>+91 95378 88852</p>
           </a>
         </div>
         <form onSubmit={submit} className="lg:col-span-7 bg-[var(--cream)] text-[var(--ink)] rounded-3xl p-8 lg:p-10 space-y-5" data-testid="admissions-form">
@@ -293,29 +322,27 @@ export const Admissions = () => {
 
 /* EVENTS — static online sessions */
 const STATIC_EVENTS = [
-  { id: 'e1', title: 'IGCSE Open House (Online)', description: 'Meet the faculty, sit in on a live English seminar, and ask anything — families from all timezones welcome.', date: '2026-05-18', location: 'Online · Zoom', category: 'admissions' },
-  { id: 'e2', title: 'Market Maths Showcase', description: 'Grade 8 presents six weeks of local-market pricing research — live from Mumbai, Cairo, Nairobi, Colombo.', date: '2026-05-27', location: 'Online · public session', category: 'academic' },
-  { id: 'e3', title: 'Environmental Audit Day', description: 'Every student, one neighbourhood, one day. Students share short films of their local environmental audits.', date: '2026-06-06', location: 'Online · global classroom', category: 'community' },
-  { id: 'e4', title: 'First Day of School', description: 'The academic year begins. New cohorts meet for the first time — tea, books, and introductions across seven countries.', date: '2026-06-01', location: 'Online · welcome assembly', category: 'community' },
-  { id: 'e5', title: 'Grandparents\' Seminar Series', description: 'Elders from our students\' families teach a craft, a language, a recipe, a trade — weekly through the term.', date: '2026-06-12', location: 'Online · rotating languages', category: 'arts' },
+  
+  { id: 'e4', title: 'First Day of School', description: 'The academic year begins. New cohorts meet for the first time — tea, books, and introductions across seven countries.', date: '2026-06-01', location: '1:00 PM - 4:00 PM', category: 'community' }
+ 
 ];
 
 const EventCard = ({ ev }) => {
   const tRef = useTilt(5);
   const catColor = { academic: 'var(--lavender)', admissions: 'var(--mint)', arts: 'var(--peach)', community: '#F7D9E4' };
   return (
-    <article ref={tRef} data-testid={`event-${ev.id}`} data-web-anchor className="group relative flex gap-6 p-7 rounded-3xl border border-[rgba(43,33,64,0.08)] bg-white overflow-hidden" style={{ transformStyle: 'preserve-3d' }}>
+    <article ref={tRef} data-testid={`event-${ev.id}`} data-web-anchor className="group disbmob relative flex gap-6 p-7 rounded-3xl border border-[rgba(43,33,64,0.08)] bg-white overflow-hidden" style={{ transformStyle: 'preserve-3d' }}>
       <div className="shrink-0 w-20 h-20 rounded-2xl flex flex-col items-center justify-center date-chip" style={{ background: catColor[ev.category] || 'var(--lavender)' }}>
         <div className="text-[10px] uppercase tracking-[0.22em]">{new Date(ev.date).toLocaleString('en', { month: 'short' })}</div>
         <div className="font-display text-3xl leading-none">{new Date(ev.date).getDate()}</div>
       </div>
       <div className="flex-1">
-        <div className="text-[10px] uppercase tracking-[0.25em] text-[var(--ink-soft)]">{ev.category}</div>
+        <div className="text-[10px] mmpb-pad uppercase tracking-[0.25em] text-[var(--ink-soft)]">{ev.category}</div>
         <h3 className="font-display text-2xl mt-1">{ev.title}</h3>
         <p className="text-[14px] text-[var(--ink-soft)] mt-2 leading-relaxed">{ev.description}</p>
         <div className="flex items-center gap-4 mt-4 text-[12px] text-[var(--ink-soft)]">
           <span className="flex items-center gap-1.5"><Calendar className="w-3.5 h-3.5" />{new Date(ev.date).toLocaleDateString('en', { weekday: 'long', day: 'numeric', month: 'long' })}</span>
-          <span className="flex items-center gap-1.5"><MapPin className="w-3.5 h-3.5" />{ev.location}</span>
+          <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" />{ev.location}</span>
         </div>
       </div>
     </article>
@@ -325,7 +352,7 @@ const EventCard = ({ ev }) => {
 export const Events = () => {
   const r = useReveal();
   return (
-    <section id="events" className="relative py-28 overflow-hidden" data-testid="events-section">
+    <section id="events" className="relative pb-28 overflow-hidden  " data-testid="events-section">
       <div className="absolute -right-24 top-24 opacity-40 pointer-events-none float-slow"><AsymmetricWeb size={260} stroke="rgba(240,143,95,0.45)" /></div>
       <div className="absolute -left-10 bottom-20 opacity-40 pointer-events-none"><MoonWeb size={200} /></div>
       <div className="max-w-7xl mx-auto px-6 lg:px-10 relative z-10">
@@ -346,16 +373,36 @@ export const Contact = () => {
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
   const [loading, setLoading] = useState(false);
   const update = (k, v) => setForm(f => ({ ...f, [k]: v }));
-  const submit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    await new Promise(r => setTimeout(r, 600));
-    toast.success('Thanks — we\'ll be in touch soon.');
-    setForm({ name: '', email: '', subject: '', message: '' });
-    setLoading(false);
-  };
+
+const submit = async (e) => {
+  e.preventDefault();
+
+  const message = `
+*New Contact Message — The Web School*
+
+Contact Details:
+• Name: ${form.name}
+• Email: ${form.email}
+
+Message Details:
+• Subject: ${form.subject}
+
+Message:
+${form.message}
+
+—
+Submitted via website
+`;
+
+  const phoneNumber = "919537888852";
+
+  const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+
+  window.open(whatsappURL, "_blank");
+};
+
   return (
-    <section id="contact" className="relative py-28 bg-[var(--cream-2)]" data-testid="contact-section">
+    <section id="contact" className="relative py-28 bg-[var(--cream-2)] " data-testid="contact-section ">
       <div className="max-w-7xl mx-auto px-6 lg:px-10 grid lg:grid-cols-12 gap-12">
         <div className="lg:col-span-5">
           <div className="text-[11px] tracking-[0.3em] uppercase text-[var(--lavender-deep)] mb-4">Contact · 05</div>
@@ -396,7 +443,7 @@ export const Footer = () => (
       </div>
       <div className="grid md:grid-cols-4 gap-10">
         <div>
-          <div className="flex items-center gap-3 mb-4"><Spider size={30} wobble /><span className="font-display text-2xl">The Web</span></div>
+          <div className="flex items-center gap-3 mb-4"><span className="font-display text-2xl">The Web</span></div>
           <p className="text-[13px] text-[var(--cream)]/70 leading-relaxed max-w-xs">A boutique online school offering Cambridge IGCSE for Grades 6–10 — where learning comes alive beyond the classroom.</p>
           <p className="text-[11px] tracking-[0.22em] uppercase text-[var(--lavender)] mt-6">Students from</p>
           <p className="text-[12px] text-[var(--cream)]/70 mt-1 leading-relaxed">India · UK · Egypt · Yemen · East Africa · Sri Lanka · UAE</p>

@@ -305,3 +305,45 @@ body::before {
 @media (prefers-reduced-motion: reduce) {
   .clip-reveal, .clip-reveal img, .stagger-item { transition: none !important; transform: none !important; clip-path: none !important; opacity: 1 !important; }
 }
+
+
+@media (max-width:750px) { 
+  .wid100permob{
+    width: 100% !important;
+    background-color:#ffffff;
+    padding:12px;
+    position: relative;
+    top: 0 !important;
+    margin-top: 40px !important;
+  }
+  .mobpadtop{
+    padding-top: 150px !important;
+  }
+  .disbmob{
+    display:block !important;
+  }
+  .mmpb-pad{
+    padding-top: 17px !important;
+  }
+  .padbotmmobls{
+padding-bottom: 0 !important;
+  }
+  .padtopmobse{
+    padding-top: 0 !important;
+  }
+ }
+
+@media (max-width:756px) { 
+  .wid100permob{
+    width: 100% !important;
+    background-color:#ffffff;
+    padding:12px;
+  }
+ }
+
+.displaynone{
+  display:none;
+}
+ul.space-y-2 li{
+  display: block;
+}

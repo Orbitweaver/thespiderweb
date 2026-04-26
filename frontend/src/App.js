@@ -37,8 +37,8 @@ function Home() {
         <About />
         <Timeline />
         <Academics />
-        <Admissions />
         <Events />
+        <Admissions />
         <Stories />
         <Contact />
       </main>

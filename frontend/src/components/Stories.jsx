@@ -50,7 +50,7 @@ export const stories = [
     date: 'Oct 2025',
     title: 'Joining The Web: what the first month feels like',
     excerpt: 'Five new families tell us, in their own words, what changed in their household in the first month of online school at The Web.',
-    img: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=900&q=80',
+    img: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=900&q=80',
     author: 'Admissions Desk',
     read: '3 min',
   },
